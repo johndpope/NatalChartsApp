@@ -35,6 +35,14 @@ const styles = StyleSheet.create({
   inputField: {
     width: '100%'
   },
+  inputTextField: {
+    height: 40,
+    borderColor: '#8E8E8E',
+    borderWidth: 1,
+    backgroundColor: '#FFFFFF',
+    padding: 5,
+    marginTop: 10
+  },
   inputDatePicker: {
     marginTop: 10
   }
@@ -125,7 +133,7 @@ export default class SetupView extends Component {
       <View style={styles.container}>
         <Text style={styles.header}>Hi there, what's your name?</Text>
         <SetupRow label='Name'>
-          <TextInput style={styles.inputField}
+          <TextInput style={[styles.inputField, styles.inputTextField]}
                      onChangeText={(name) => this.setState({'name': name})}
                      value={this.state.name} />
         </SetupRow>
@@ -134,6 +142,8 @@ export default class SetupView extends Component {
                       mode="date"
                       format="MMMM Do YYYY"
                       date={this.state.birth_date}
+                      confirmBtnText="Confirm"
+                      cancelBtnText="Cancel"
                       showIcon={false}
                       onDateChange={(strDate, date) => this.setState({'birth_date': date})} />
         </SetupRow>
@@ -142,11 +152,13 @@ export default class SetupView extends Component {
                       mode="time"
                       format="h:mm a"
                       date={this.state.birth_time}
+                      confirmBtnText="Confirm"
+                      cancelBtnText="Cancel"
                       showIcon={false}
                       onDateChange={(strDate, date) => this.setState({'birth_time': date})} />
         </SetupRow>
         <SetupRow label='Birth city'>
-          <TextInput style={styles.inputField}
+          <TextInput style={[styles.inputField, styles.inputTextField]}
                      onChangeText={(text) => this.setState({'birth_city': text})}
                      value={this.state.birth_city} />
         </SetupRow>
