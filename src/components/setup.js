@@ -61,8 +61,8 @@ export default class SetupView extends Component {
 
     this.state = {
       name: '',
-      birth_date: '',
-      birth_time: '',
+      birth_date: moment().utc().toDate(),
+      birth_time: moment().utc().toDate(),
       birth_city: '',
       is_processing: false
     }
@@ -145,7 +145,7 @@ export default class SetupView extends Component {
                       confirmBtnText="Confirm"
                       cancelBtnText="Cancel"
                       showIcon={false}
-                      onDateChange={(strDate, date) => this.setState({'birth_date': date})} />
+                      onDateChange={(strDate, date) => { console.log(date); this.setState({'birth_date': date}) } } />
         </SetupRow>
         <SetupRow label='Birth time'>
           <DatePicker style={[styles.inputField, styles.inputDatePicker]}
