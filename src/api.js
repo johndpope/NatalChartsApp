@@ -1,4 +1,4 @@
-const BASE_URI = "http://192.168.1.214:8080/"
+const BASE_URI = "https://kasra-natal-charts.herokuapp.com/"
 
 export default class Api {
   geolocate(query) {

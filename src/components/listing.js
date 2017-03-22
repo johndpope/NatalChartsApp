@@ -7,6 +7,7 @@ import {
   FlatList,
   Text,
   TextInput,
+  Linking,
   TouchableHighlight,
   ScrollView,
   View
@@ -133,7 +134,7 @@ export default class ListingView extends Component {
 
     url += "-house/";
 
-    console.log(url);
+    Linking.openURL(url);
   }
 
   renderListItem({item, index}) {
@@ -153,7 +154,7 @@ export default class ListingView extends Component {
     return (
       <View style={styles.container}>
         <Text style={styles.header}>Hi there, {person.name}</Text>
-        <Text style={styles.headerExplainText}>So far clicking on the items below simply opens freespiritedmind's description of that body's natal house positioning</Text>
+        <Text style={styles.headerExplainText}>So far clicking on the items below simply opens freespiritedmind's description of that body's natal house positioning. Sorry all the articles say "he". There's no article for ascendant / rising since those aren't planets.</Text>
         {this.state.list_items && 
           <FlatList
             data={this.state.list_items}
