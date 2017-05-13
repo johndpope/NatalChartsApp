@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import DatePicker from 'react-native-datepicker'
-import DateTimePicker from 'react-native-modal-datetime-picker';
 import Api from '../api';
 
 import {
   AsyncStorage,
   AppRegistry,
   Alert,
-  DatePickerIOS,
   StyleSheet,
   Button,
   Text,
@@ -69,22 +67,15 @@ export default class SetupView extends Component {
 
     this.state = {
       name: '',
-      birth_date: moment().utc().toDate(),
+      birth_date: moment('19900101', 'YYYYMMDD').utc().toDate(),
       birth_time: moment().utc().toDate(),
-      birth_date_formatted: 'Tap to enter birthday',
-      birth_time_formatted: 'Tap to enter birth time',
       birth_city: '',
       is_processing: false,
-      picker_visible_birth_day: false,
-      picker_visible_birth_time: false
     }
 
     this.onSubmitClick = this.onSubmitClick.bind(this);
     this.showCityConfirmation = this.showCityConfirmation.bind(this);
     this.onCityValidated = this.onCityValidated.bind(this);
-    
-    this.toggleBirthDateDialog = this.toggleBirthDateDialog.bind(this);
-    this.toggleBirthTimeDialog = this.toggleBirthTimeDialog.bind(this);
     
     this.onNewBirthdate = this.onNewBirthdate.bind(this);
     this.onNewBirthTime = this.onNewBirthTime.bind(this);
@@ -122,8 +113,8 @@ export default class SetupView extends Component {
   }
 
   onCityValidated() {
-    let birth_date = moment(this.state.birth_date);
-    let birth_time = moment(this.state.birth_time);
+    let birth_date = moment(this.state.birth_date, 'YYYY-MM-DD');
+    let birth_time = moment(this.state.birth_time, 'HH:mm');
 
     new Api().chart(this.state.name, birth_date, birth_time, this.state.parsed_birth_city)
       .then((json) => {
@@ -144,30 +135,23 @@ export default class SetupView extends Component {
       })
   }
   
-  toggleBirthDateDialog() {
-    this.setState({picker_visible_birth_day: !this.state.picker_visible_birth_day});
-  }
-  
-  toggleBirthTimeDialog() {
-    this.setState({picker_visible_birth_time: !this.state.picker_visible_birth_time});
-  }
-  
   onNewBirthdate(date) {
-    let formatted = moment(date).format("MMMM Do YYYY");
+    console.log("new birthdate: " + date);
     
-    this.setState({birth_date: date, birth_date_formatted: formatted,
-      picker_visible_birth_day: false});
+    this.setState({birth_date: date});
   }
   
   onNewBirthTime(date) {
-    let formatted = moment(date).format("h:mm a");
+    console.log("new birthtime: " + date);
     
-    this.setState({birth_time: date, birth_time_formatted: formatted,
-      picker_visible_birth_time: false});
+    this.setState({birth_time: date});
   }
 
   render() {
     let allFieldsHaveContents = this.state.name && this.state.birth_date && this.state.birth_time && this.state.birth_city;
+    let maxDateString = moment().format('YYYY-MM-DD');
+    let minDateString = moment('19400101','YYYYMMDD').format('YYYY-MM-DD');
+
     return (
       <ScrollView style={styles.container}>
       <View style={styles.container}>
@@ -178,28 +162,20 @@ export default class SetupView extends Component {
                      value={this.state.name} />
         </SetupRow>
         <SetupRow label='Birth day'>
-          <TouchableHighlight onPress={this.toggleBirthDateDialog} style={styles.inputField}>
-            <Text style={styles.inputTextField}>{this.state.birth_date_formatted}</Text>
-          </TouchableHighlight>
-          <DateTimePicker
-            isVisible={this.state.picker_visible_birth_day}
-            onConfirm={this.onNewBirthdate}
-            mode='date'
-            titleIOS='Birthday'
+          <DatePicker
             date={this.state.birth_date}
-            onCancel={() => { this.setState({picker_visible_birth_day: false}) }} />
+            onDateChange={this.onNewBirthdate}
+            maxDate={maxDateString}
+            minDate={minDateString}
+            showIcon={false}
+            mode='date' />
         </SetupRow>
         <SetupRow label='Birth time'>
-          <TouchableHighlight onPress={this.toggleBirthTimeDialog}>
-            <Text style={[styles.inputField, styles.inputTextField]}>{this.state.birth_time_formatted}</Text>
-          </TouchableHighlight>
-          <DateTimePicker
-            isVisible={this.state.picker_visible_birth_time}
-            onConfirm={this.onNewBirthTime}
-            mode='time'
-            titleIOS='Birth time'
-            date={this.state.birth_date}
-            onCancel={() => { this.setState({picker_visible_birth_time: false}) }} />
+          <DatePicker
+            date={this.state.birth_time}
+            onDateChange={this.onNewBirthTime}
+            showIcon={false}
+            mode='time' />
         </SetupRow>
         <SetupRow label='Birth city'>
           <TextInput style={[styles.inputField, styles.inputTextField]}
@@ -208,7 +184,7 @@ export default class SetupView extends Component {
         </SetupRow>
         <Button
           onPress={this.onSubmitClick}
-          title="Start the journey"
+          title={this.state.is_processing ? "Taking off..." : "Start the journey"}
           disabled={this.state.is_processing || !allFieldsHaveContents} />
       </View>
       </ScrollView>
