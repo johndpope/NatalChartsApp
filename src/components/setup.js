@@ -184,7 +184,7 @@ export default class SetupView extends Component {
         </SetupRow>
         <Button
           onPress={this.onSubmitClick}
-          title={this.state.is_processing ? "Taking off..." : "Start the journey"}
+          title={this.state.is_processing ? "Taking off..." : "Let's do this"}
           disabled={this.state.is_processing || !allFieldsHaveContents} />
       </View>
       </ScrollView>
