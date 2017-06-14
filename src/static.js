@@ -113,5 +113,29 @@ const SIGNS_WITH_INFO = {
   }
 };
 
+const PLANETS_WITH_INFO = {
+  "Sun": {
+    "icon": "https://cdn.glitch.com/e4e4a6b3-d941-4ce7-83d9-950d6528f824%2Fic_sun.svg?1495986813996"
+  }, 
+  "Moon": {
+    "icon": "https://cdn.glitch.com/e4e4a6b3-d941-4ce7-83d9-950d6528f824%2Fic_moon.svg?1495986815349"
+  }, 
+  "Mercury": {
+    "icon": "https://cdn.glitch.com/e4e4a6b3-d941-4ce7-83d9-950d6528f824%2Fic_mercury.svg?1495986815195"
+  }, 
+  "Venus": {
+    "icon": "https://cdn.glitch.com/e4e4a6b3-d941-4ce7-83d9-950d6528f824%2Fic_venus.svg?1495986814230"
+  }, 
+  "Mars": {
+    "icon": "https://cdn.glitch.com/e4e4a6b3-d941-4ce7-83d9-950d6528f824%2Fic_mars.svg?1495986815095"
+  }, 
+  "Jupiter": {
+    "icon": "https://cdn.glitch.com/e4e4a6b3-d941-4ce7-83d9-950d6528f824%2Fic_jupiter.svg?1495986814784"
+  }, 
+  "Saturn": {
+    "icon": "https://cdn.glitch.com/e4e4a6b3-d941-4ce7-83d9-950d6528f824%2Fic_saturn.svg?1495986813967"
+  }
+};
 
-export { PLANET_SORT_ORDER, HOUSE_DISPLAY_NAMES, SIGNS_WITH_INFO };
+
+export { PLANET_SORT_ORDER, HOUSE_DISPLAY_NAMES, SIGNS_WITH_INFO, PLANETS_WITH_INFO };
