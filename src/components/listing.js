@@ -20,7 +20,8 @@ import { PLANET_SORT_ORDER, HOUSE_DISPLAY_NAMES, SIGNS_WITH_INFO, PLANETS_WITH_I
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#E7E7E7'
+    backgroundColor: '#E7E7E7',
+    paddingTop: 10
   },
   page: {
     flex: 1,

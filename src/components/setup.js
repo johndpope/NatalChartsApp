@@ -176,6 +176,8 @@ export default class SetupView extends Component {
             minDate={minDate.format('YYYY-MM-DD')}
             maxDate={maxDate.format('YYYY-MM-DD')}
             showIcon={false}
+            confirmBtnText="Confirm"
+            cancelBtnText="Cancel"
             mode='date' />
         </SetupRow>
         <SetupRow label='Birth time'>
@@ -186,6 +188,8 @@ export default class SetupView extends Component {
             onDateChange={this.onNewBirthTime}
             is24Hour={false}
             showIcon={false}
+            confirmBtnText="Confirm"
+            cancelBtnText="Cancel"
             mode='time' />
         </SetupRow>
         <SetupRow label='Birth city'>
