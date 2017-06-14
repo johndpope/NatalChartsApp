@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import moment from 'moment';
+import Swiper from 'react-native-swiper';
+import SvgImage from './SvgImage';
 
 import {
   AsyncStorage,
@@ -13,152 +16,85 @@ import {
   View
 } from 'react-native';
 
+import { PLANET_SORT_ORDER, HOUSE_DISPLAY_NAMES, SIGNS_WITH_INFO } from '../static';
+
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: '#E7E7E7'
   },
-  header: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 20
+  page: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginTop: 5
   },
   headerExplainText: {
-    fontSize: 12,
+    fontSize: 15,
     textAlign: 'center',
-    margin: 5,
-    marginTop: 0
+    margin: 5
   },
-  listRow: {
-    padding: 20,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#8E8E8E'
+  pageHeader: {
+    fontSize: 20,
+    alignSelf: 'center',
+    color: '#000'
   },
-  listItemPlanet: {
-    fontSize: 18,
-    alignSelf: 'flex-start'
+  planetRow: {
+    marginBottom: 5
   },
-  listItemSign: {
-    fontSize: 18,
-    flexGrow: 1,
-    textAlign: 'center'
-  },
-  listItemHouse: {
+  planetText: {
     fontSize: 16,
-    alignSelf: 'flex-end'
+    marginBottom: 5,
+    color: '#000'
   }
 });
-
-const PLANET_SORT_ORDER = ['Sun', 'Moon', 'Ascendant', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn'];
-const HOUSE_DISPLAY_NAMES = {
-  'House1':  {num: 1,  roman: 'I'},
-  'House2':  {num: 2,  roman: 'II'},
-  'House3':  {num: 3,  roman: 'III'},
-  'House4':  {num: 4,  roman: 'IV'},
-  'House5':  {num: 5,  roman: 'V'},
-  'House6':  {num: 6,  roman: 'VI'},
-  'House7':  {num: 7,  roman: 'VII'},
-  'House8':  {num: 8,  roman: 'VIII'},
-  'House9':  {num: 9,  roman: 'IX'},
-  'House10': {num: 10, roman: 'X'},
-  'House11': {num: 11, roman: 'XI'},
-  'House12': {num: 12, roman: 'XII'}
-};
-
-const ListSeparator = () => <View style={styles.listSeparator} />;
 
 export default class ListingView extends Component {
   constructor(props) {
     super(props);
 
-    // Okay so we want our list to show Sun/Moon/Rising then the rest of
-    // the planets, so let's make a really simple list of objects that
-    // contains JUST that info
-    list_items = [];
-    for (let planet of Object.keys(props.chart.planets)) {
-      list_items.push({
-                      'key': planet,
-                      'planet': planet,
-                      'sign': props.chart.planets[planet].planet.sign,
-                      'house': props.chart.planets[planet].house
-                      });
+    var pages = [];
+    for (var i = 0; i < 3; i++) {
+      let key = PLANET_SORT_ORDER[i];
+      pages.push({name: key, val: props.chart.planets[key]});
     }
-
-    list_items.push({
-      'key': 'Ascendant',
-      'planet': 'Ascendant',
-      'sign': props.chart.houses['House1'].sign,
-      'house': 'House1'
-
-    });
-    list_items.sort((a, b) => PLANET_SORT_ORDER.indexOf(a.planet) - PLANET_SORT_ORDER.indexOf(b.planet));
 
     this.state = {
-      list_items: list_items
+      pages: pages
     }
-
-    this.renderListItem = this.renderListItem.bind(this);
-    this.onItemPress = this.onItemPress.bind(this);
   }
 
-  onItemPress(item) {
-    if(item.planet == 'Ascendant') {
-      return;
-    }
-    var url = "http://freespiritedmind.com/natal-";
-    url += item.planet.toLowerCase();
-    url += "-in-the-";
+  renderPage(page) {
+    let planet = page.val.planet;
+    let sign = SIGNS_WITH_INFO[planet.sign];
 
-    let house_num = HOUSE_DISPLAY_NAMES[item.house].num;
-
-    url += house_num;
-
-    switch(house_num) {
-      case 1:
-        url += "st";
-        break;
-      case 2:
-        url += "nd";
-        break;
-      case 3:
-        url += "rd";
-        break;
-      default:
-        url += "th";
-        break;
-    };
-
-    url += "-house/";
-
-    Linking.openURL(url);
-  }
-
-  renderListItem({item, index}) {
     return (
-      <TouchableHighlight onPress={() => { this.onItemPress(item); }} underlayColor='#F06292'>
-        <View style={styles.listRow}>
-          <Text style={styles.listItemPlanet}>{item.planet}</Text>
-          <Text style={styles.listItemSign}>{item.sign}</Text>
-          <Text style={styles.listItemHouse}>House {HOUSE_DISPLAY_NAMES[item.house].roman}</Text>
+      <View style={styles.page} key={page.name}>
+        <Text style={[styles.pageHeader, styles.planetText]}>{page.name}</Text>
+        <SvgImage style={styles.planetRow} width="50" height="50" source={{uri: sign.icon}} />
+        <Text style={styles.planetText}>{planet.sign}</Text>
+        <Text style={styles.planetText}>{sign.title}</Text>
+        <View style={{marginTop: 10}}>
+          <Text style={styles.planetText}>Element: {sign.element}</Text>
+          <Text style={styles.planetText}>Quality: {sign.quality}</Text>
+          <Text style={styles.planetText}>Ruler: {sign.ruler}</Text>
         </View>
-      </TouchableHighlight>
+      </View>
     )
   }
 
   render() {
     let person = this.props.person;
+    let birthtime = moment.unix(person.birthdate).utc().format("dddd, MMMM Do YYYY, h:mm a");
+
+    let pages = this.state.pages.map((page, key) => this.renderPage(page));
+
     return (
       <View style={styles.container}>
-        <Text style={styles.header}>Hi there, {person.name}</Text>
-        <Text style={styles.headerExplainText}>So far clicking on the items below simply opens freespiritedmind's description of that body's natal house positioning. Sorry all the articles say "he". There's no article for ascendant / rising since those aren't planets.</Text>
-        {this.state.list_items && 
-          <FlatList
-            data={this.state.list_items}
-            renderItem={this.renderListItem} />
+        <Text style={styles.headerExplainText}>{birthtime}</Text>
+        {this.state.pages && 
+          <Swiper showsButtons>
+            {pages}
+          </Swiper>
         }
       </View>
     )

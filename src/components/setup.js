@@ -68,7 +68,7 @@ export default class SetupView extends Component {
     this.state = {
       name: '',
       birth_date: moment('19900101', 'YYYYMMDD').utc().toDate(),
-      birth_time: moment().utc().toDate(),
+      birth_time: moment().minute(0).second(0).utc().toDate(),
       birth_city: '',
       is_processing: false,
     }
@@ -80,7 +80,7 @@ export default class SetupView extends Component {
     this.onNewBirthdate = this.onNewBirthdate.bind(this);
     this.onNewBirthTime = this.onNewBirthTime.bind(this);
 
-    if (props.onComplete) {
+    if (this.props.onComplete) {
       this.onComplete = props.onComplete.bind(this);
     }
   };
@@ -91,8 +91,10 @@ export default class SetupView extends Component {
       return;
     }
 
+    let birth_date = moment(this.state.birth_date, 'YYYY-MM-DD');
+
     this.setState({is_processing: true});
-    new Api().geolocate(this.state.birth_city)
+    new Api().geolocate(this.state.birth_city, birth_date)
       .then((json) => {
         this.setState({parsed_birth_city: json});
         this.showCityConfirmation();
@@ -106,7 +108,8 @@ export default class SetupView extends Component {
   showCityConfirmation() {
     Alert.alert("Just to confirm", "You were born in: " + this.state.parsed_birth_city.location + "?",
       [
-        {text: "That's not right", style: 'cancel', onPress: () => { this.setState(is_processing: false, parsed_birth_city: null) }},
+        {text: "That's not right", style: 'cancel',
+          onPress: () => { this.setState({is_processing: false, parsed_birth_city: null}) }}, 
         {text: "Yep", onPress: () => { this.onCityValidated() }}
       ]
     );
@@ -114,13 +117,16 @@ export default class SetupView extends Component {
 
   onCityValidated() {
     let birth_date = moment(this.state.birth_date, 'YYYY-MM-DD');
-    let birth_time = moment(this.state.birth_time, 'HH:mm');
+    
+    let birth_hour = this.state.birth_time.split(":")[0];
+    let birth_min = this.state.birth_time.split(":")[1];
 
-    new Api().chart(this.state.name, birth_date, birth_time, this.state.parsed_birth_city)
+    new Api().chart(this.state.name, birth_date, birth_hour, birth_min, this.state.parsed_birth_city)
       .then((json) => {
         this.setState({is_processing: false});
         AsyncStorage.setItem('@NatalCharts:loggedInUser', JSON.stringify(json))
           .then(() => {
+            console.log("done");
             if (this.onComplete)
               this.onComplete();
           })
@@ -144,13 +150,14 @@ export default class SetupView extends Component {
   onNewBirthTime(date) {
     console.log("new birthtime: " + date);
     
+    console.log(date);
     this.setState({birth_time: date});
   }
 
   render() {
     let allFieldsHaveContents = this.state.name && this.state.birth_date && this.state.birth_time && this.state.birth_city;
-    let maxDateString = moment().format('YYYY-MM-DD');
-    let minDateString = moment('19400101','YYYYMMDD').format('YYYY-MM-DD');
+    let maxDate = moment();
+    let minDate = moment('19400101','YYYYMMDD');
 
     return (
       <ScrollView style={styles.container}>
@@ -161,19 +168,23 @@ export default class SetupView extends Component {
                      onChangeText={(name) => this.setState({'name': name})}
                      value={this.state.name} />
         </SetupRow>
-        <SetupRow label='Birth day'>
+        <SetupRow label='Birthday' style={styles.inputField}>
           <DatePicker
+            style={styles.inputField}
             date={this.state.birth_date}
             onDateChange={this.onNewBirthdate}
-            maxDate={maxDateString}
-            minDate={minDateString}
+            minDate={minDate.format('YYYY-MM-DD')}
+            maxDate={maxDate.format('YYYY-MM-DD')}
             showIcon={false}
             mode='date' />
         </SetupRow>
         <SetupRow label='Birth time'>
           <DatePicker
+            style={styles.inputField}
             date={this.state.birth_time}
+            format={'HH:mm'}
             onDateChange={this.onNewBirthTime}
+            is24Hour={false}
             showIcon={false}
             mode='time' />
         </SetupRow>
