@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 
 import {
   AsyncStorage,
@@ -53,7 +54,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const PLANET_SORT_ORDER = ['Sun', 'Moon', 'Ascendant', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn'];
+const PLANET_SORT_ORDER = ['Sun', 'Moon', 'Ascendant', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto'];
 const HOUSE_DISPLAY_NAMES = {
   'House1':  {num: 1,  roman: 'I'},
   'House2':  {num: 2,  roman: 'II'},
@@ -138,6 +139,7 @@ export default class ListingView extends Component {
   }
 
   renderListItem({item, index}) {
+    console.log(item);
     return (
       <TouchableHighlight onPress={() => { this.onItemPress(item); }} underlayColor='#F06292'>
         <View style={styles.listRow}>
@@ -151,10 +153,11 @@ export default class ListingView extends Component {
 
   render() {
     let person = this.props.person;
+    let birthtime = moment.unix(person.birthdate).utc().format("dddd, MMMM Do YYYY, h:mm a");
     return (
       <View style={styles.container}>
         <Text style={styles.header}>Hi there, {person.name}</Text>
-        <Text style={styles.headerExplainText}>So far clicking on the items below simply opens freespiritedmind's description of that body's natal house positioning. Sorry all the articles say "he". There's no article for ascendant / rising since those aren't planets.</Text>
+        <Text style={styles.headerExplainText}>{birthtime}</Text>
         {this.state.list_items && 
           <FlatList
             data={this.state.list_items}

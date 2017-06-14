@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import SetupView from './setup';
 import ListingView from './listing';
+import createHistory from 'history/createMemoryHistory'
 
 import {
   AsyncStorage,
@@ -9,8 +10,18 @@ import {
   Text,
   TextInput,
   ScrollView,
-  View
+  View,
+  Alert
 } from 'react-native';
+
+import { Router, Route, Switch, Link } from 'react-router-native'
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#FF0000'
+  }
+});
 
 export default class IndexView extends Component {
   constructor(props) {
@@ -20,7 +31,10 @@ export default class IndexView extends Component {
       logged_in: false
     };
 
+    this.history = createHistory();
+
     this.checkForUser = this.checkForUser.bind(this);
+    this.getUserConfirmation = this.getUserConfirmation.bind(this);
   }
 
   componentWillMount() {
@@ -31,19 +45,32 @@ export default class IndexView extends Component {
     AsyncStorage.getItem('@NatalCharts:loggedInUser')
       .then(req => JSON.parse(req))
       .then((user) => {
+        if (user == null) { return; }
+        console.log("found a user");
         this.setState({logged_in: true, chart: user.chart, person: user.person});
+        this.history.replace('/chart');
       })
-      .catch((error) => {});
+      .catch((error) => { console.log(error); });
   }
 
-  // #TODO: I don't know why but no matter if state.logged_in == true this shows the
-  // else part. It definitely gets called twice (once on first load, once on async get)
-  // and definitely enters the if (this.state.logged_in), but still SetupView :/
-  render() {
-    if (this.state.logged_in) {
-      return <ListingView chart={this.state.chart} person={this.state.person} />
-    }
+  getUserConfirmation(message, callback) {
+    Alert.alert('Confirm', message, [
+      { text: 'Cancel', onPress: () => callback(false) },
+      { text: 'OK', onPress: () => callback(true) }
+    ])
+  }
 
-    return <SetupView onComplete={this.checkForUser} />
+  render() {
+    console.log(this.history.location);
+    return (
+      <Router history={this.history} getUserConfirmation={this.getUserConfirmation}>
+        <Switch style={styles.container}>
+          <Route path="/chart" render={(props) => 
+            ( <ListingView chart={this.state.chart} person={this.state.person} /> )} />
+          <Route path="/" history={this.history} render={(props) =>
+            ( <SetupView onComplete={this.checkForUser} {...props} /> )} />
+        </Switch>
+      </Router>
+    )
   }
 }
