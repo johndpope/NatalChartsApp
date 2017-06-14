@@ -10,9 +10,9 @@ platform :ios do
   lane :beta do |values|
     # Fabric generated this lane for deployment to Crashlytics Beta
     # set 'export_method' to 'ad-hoc' if your Crashlytics Beta distribution uses ad-hoc provisioning
-    cert
-    sigh(force: true)
-    gym(scheme: 'NatalChartsApp - Release', use_legacy_build_api: true)
+    cert(username: values[:username])
+    sigh(force: true, username: values[:username], app_identifier: values[:app_identifier], adhoc: true)
+    gym(scheme: 'NatalChartsApp - Release', export_method: 'ad-hoc')
 
     emails = values[:test_email] ? values[:test_email] : ['hi@kasra.codes'] # You can list more emails here
     groups = values[:test_email] ? nil : nil # You can define groups on the web and reference them here
