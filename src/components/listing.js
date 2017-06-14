@@ -16,7 +16,7 @@ import {
   View
 } from 'react-native';
 
-import { PLANET_SORT_ORDER, HOUSE_DISPLAY_NAMES, SIGNS_WITH_INFO } from '../static';
+import { PLANET_SORT_ORDER, HOUSE_DISPLAY_NAMES, SIGNS_WITH_INFO, PLANETS_WITH_INFO } from '../static';
 
 const styles = StyleSheet.create({
   container: {
@@ -66,17 +66,23 @@ export default class ListingView extends Component {
   renderPage(page) {
     let planet = page.val.planet;
     let sign = SIGNS_WITH_INFO[planet.sign];
+    let planetInfo = PLANETS_WITH_INFO[page.name];
 
     return (
       <View style={styles.page} key={page.name}>
+        {planetInfo && 
+          <SvgImage styles={styles.planetRow} width="80" height="80" source={{uri: planetInfo.icon}} />
+        }
         <Text style={[styles.pageHeader, styles.planetText]}>{page.name}</Text>
-        <SvgImage style={styles.planetRow} width="50" height="50" source={{uri: sign.icon}} />
-        <Text style={styles.planetText}>{planet.sign}</Text>
-        <Text style={styles.planetText}>{sign.title}</Text>
-        <View style={{marginTop: 10}}>
-          <Text style={styles.planetText}>Element: {sign.element}</Text>
-          <Text style={styles.planetText}>Quality: {sign.quality}</Text>
-          <Text style={styles.planetText}>Ruler: {sign.ruler}</Text>
+        <View style={{flexGrow: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <SvgImage style={styles.planetRow} width="60" height="60" source={{uri: sign.icon}} />
+          <Text style={styles.planetText}>{planet.sign}</Text>
+          <Text style={styles.planetText}>{sign.title}</Text>
+          <View style={{marginTop: 10}}>
+            <Text style={styles.planetText}>Element: {sign.element}</Text>
+            <Text style={styles.planetText}>Quality: {sign.quality}</Text>
+            <Text style={styles.planetText}>Ruler: {sign.ruler}</Text>
+          </View>
         </View>
       </View>
     )
