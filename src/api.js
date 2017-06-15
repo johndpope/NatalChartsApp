@@ -12,7 +12,7 @@ export default class Api {
       .then((res) => res.json());
   }
 
-  chart(name, date, time_hour, time_min, location) {
+  chart(name, date, time, location) {
     var formData = new FormData();
     formData.append("name", name);
     
@@ -20,8 +20,8 @@ export default class Api {
     formData.append("date_month", date.month() + 1);
     formData.append("date_day", date.date());
     
-    formData.append("date_hour", time_hour);
-    formData.append("date_min", time_min)
+    formData.append("date_hour", time.hour());
+    formData.append("date_min", time.minute())
     
     formData.append("location_lat", location.geo[0])
     formData.append("location_lon", location.geo[1]);

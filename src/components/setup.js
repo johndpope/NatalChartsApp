@@ -35,53 +35,67 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     paddingRight: 20
   },
-  inputLabel: {
-    fontSize: 26,
-    marginLeft: 10,
-    marginRight: 10,
-    alignSelf: 'flex-end',
-    color: '#FFF'
+  nameInput: {
+    width: '100%',
+    marginTop: 10,
+    alignItems: 'center',
+    fontSize: 32,
+    color: '#ff03d2'
   },
-  inputLabelFullWidth: {
+  setupRowLabel: {
     width: '100%',
     fontSize: 32,
     color: '#FFF'
   },
-  inputFieldFullWidth: {
-    width: '100%'
+  birthAtLabel: {
+    fontSize: 32,
+    alignSelf: 'flex-end',
+    color: '#FFF'
   },
-  inputField: {
-    height: 40,
+  birthInLabel: {
+    fontSize: 32,
+    alignSelf: 'flex-end',
+    color: '#FFF',
+  },
+  birthdayPicker: {
+    width: 180,
+    height: 60,
     borderBottomColor: '#23346a',
     borderBottomWidth: 1,
     borderStyle: 'dotted',
     padding: 5,
     marginTop: 10,
+    marginRight: 10,
     alignItems: 'center'
   },
-  inputTextField: {
-    height: 40,
-    padding: 5,
+  birthtimePicker: {
+    width: 150,
+    height: 60,
+    borderBottomColor: '#23346a',
+    borderBottomWidth: 1,
+    borderStyle: 'dotted',
     marginTop: 10,
-    alignItems: 'center',
-    fontSize: 26,
+    marginRight: 10,
+    alignItems: 'flex-start'
+  },
+  birthLocationInput: {
+    marginTop: 10,
+    alignItems: 'flex-end',
+    fontSize: 32,
     color: '#ff03d2',
     width: '80%'
   },
   datePicker: {
-    borderWidth: 0,
-    height: 100,
-    width: 200
+    borderWidth: 0
   },
   datePickerContainer: {
     height: 100,
-    width: 200,
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
   },
   datePickerText: {
-    fontSize: 26,
+    fontSize: 32,
     color: '#ff03d2'
   },
   submitWrapper: {
@@ -97,14 +111,14 @@ const styles = StyleSheet.create({
   submitButton: {
     color: '#FFF',
     margin: 10,
-    fontSize: 26
+    fontSize: 32
   }
 });
 
 const SetupRow = ({title, ...props}) => (
   <View style={styles.rowContainer}>
     {title &&
-      <Text style={styles.inputLabelFullWidth}>{title}</Text>}
+      <Text style={styles.setupRowLabel}>{title}</Text>}
     {props.children}
   </View>
 );
@@ -171,11 +185,9 @@ export default class SetupView extends Component {
 
   onCityValidated() {
     let birth_date = moment(this.state.birth_date, 'MM/DD/YYYY');
-    
-    let birth_hour = this.state.birth_time.split(":")[0];
-    let birth_min = this.state.birth_time.split(":")[1];
+    let birth_time = moment(this.state.birth_time, 'hh:mm a');
 
-    new Api().chart(this.state.name, birth_date, birth_hour, birth_min, this.state.parsed_birth_city)
+    new Api().chart(this.state.name, birth_date, birth_time, this.state.parsed_birth_city)
       .then((json) => {
         this.setState({is_processing: false});
         AsyncStorage.setItem('@NatalCharts:loggedInUser', JSON.stringify(json))
@@ -212,13 +224,13 @@ export default class SetupView extends Component {
       <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
         <SetupRow title='My name is'>
-          <TextInput style={[styles.inputFieldFullWidth, styles.inputTextField]}
+          <TextInput style={styles.nameInput}
                      onChangeText={(name) => this.setState({'name': name})}
                      value={this.state.name} />
         </SetupRow>
         <SetupRow title='I was born on'>
           <DatePicker
-            style={styles.inputField}
+            style={styles.birthdayPicker}
             date={this.state.birth_date}
             onDateChange={this.onNewBirthdate}
             minDate={minDate.format('YYYY-MM-DD')}
@@ -229,11 +241,11 @@ export default class SetupView extends Component {
             confirmBtnText="Confirm"
             cancelBtnText="Cancel"
             mode='date' />
-          <Text style={styles.inputLabel}>at</Text>
+          <Text style={styles.birthAtLabel}>at</Text>
           <DatePicker
-            style={styles.inputField}
+            style={styles.birthtimePicker}
             date={this.state.birth_time}
-            format={'HH:mm'}
+            format={'hh:mm a'}
             customStyles={{dateInput: styles.datePicker, dateText: styles.datePickerText, dateTouchBody: styles.datePickerContainer}}
             onDateChange={this.onNewBirthTime}
             is24Hour={false}
@@ -241,8 +253,8 @@ export default class SetupView extends Component {
             confirmBtnText="Confirm"
             cancelBtnText="Cancel"
             mode='time' />
-          <Text style={styles.inputLabel}>in</Text>
-          <TextInput style={[styles.inputTextField]}
+          <Text style={styles.birthInLabel}>in</Text>
+          <TextInput style={styles.birthLocationInput}
                      onChangeText={(text) => this.setState({'birth_city': text})}
                      value={this.state.birth_city} />
         </SetupRow>
