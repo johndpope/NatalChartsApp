@@ -45,9 +45,12 @@ export default class IndexView extends Component {
     AsyncStorage.getItem('@NatalCharts:loggedInUser')
       .then(req => JSON.parse(req))
       .then((user) => {
-        if (user == null || user.error) { return; }
+        if (user == null || user.error) { 
+          this.history.replace('/setup');
+          return;
+        }
         this.setState({logged_in: true, chart: user.chart, person: user.person});
-        this.history.replace('/chart');
+        this.history.push('/chart');
       })
       .catch((error) => { console.log(error); });
   }
@@ -63,10 +66,11 @@ export default class IndexView extends Component {
     return (
       <Router history={this.history} getUserConfirmation={this.getUserConfirmation}>
         <Switch style={styles.container}>
-          <Route path="/chart" render={(props) => 
+          <Route exact path="/chart" render={(props) => 
             ( <ListingView chart={this.state.chart} person={this.state.person} /> )} />
-          <Route path="/" history={this.history} render={(props) =>
+          <Route exact path="/setup" history={this.history} render={(props) =>
             ( <SetupView onComplete={this.checkForUser} {...props} /> )} />
+          <Route path="/" render={(props) => ( <View {...props} /> )} />
         </Switch>
       </Router>
     )

@@ -33,10 +33,12 @@ const styles = StyleSheet.create({
     margin: 20,
     flexDirection: 'row',
     flexWrap: 'wrap',
-    paddingRight: 20
+    paddingRight: 20,
+    borderBottomWidth: 1
   },
   nameInput: {
     width: '100%',
+    height: 60,
     marginTop: 10,
     alignItems: 'center',
     fontSize: 32,
@@ -60,10 +62,6 @@ const styles = StyleSheet.create({
   birthdayPicker: {
     width: 180,
     height: 60,
-    borderBottomColor: '#23346a',
-    borderBottomWidth: 1,
-    borderStyle: 'dotted',
-    padding: 5,
     marginTop: 10,
     marginRight: 10,
     alignItems: 'center'
@@ -71,14 +69,12 @@ const styles = StyleSheet.create({
   birthtimePicker: {
     width: 150,
     height: 60,
-    borderBottomColor: '#23346a',
-    borderBottomWidth: 1,
-    borderStyle: 'dotted',
     marginTop: 10,
     marginRight: 10,
     alignItems: 'flex-start'
   },
   birthLocationInput: {
+    height: 60,
     marginTop: 10,
     alignItems: 'flex-end',
     fontSize: 32,
@@ -91,11 +87,15 @@ const styles = StyleSheet.create({
   datePickerContainer: {
     height: 100,
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    borderBottomWidth: 1
   },
   datePickerText: {
     fontSize: 32,
+    color: '#ff03d2'
+  },
+  datePickerConfirmText: {
     color: '#ff03d2'
   },
   submitWrapper: {
@@ -176,9 +176,9 @@ export default class SetupView extends Component {
   showCityConfirmation() {
     Alert.alert("Just to confirm", "You were born in: " + this.state.parsed_birth_city.location + "?",
       [
+        {text: "Yep", style: 'default', onPress: () => { this.onCityValidated() }},
         {text: "That's not right", style: 'cancel',
-          onPress: () => { this.setState({is_processing: false, parsed_birth_city: null}) }}, 
-        {text: "Yep", onPress: () => { this.onCityValidated() }}
+          onPress: () => { this.setState({is_processing: false, parsed_birth_city: null}) }}
       ]
     );
   }
@@ -236,7 +236,7 @@ export default class SetupView extends Component {
             minDate={minDate.format('YYYY-MM-DD')}
             maxDate={maxDate.format('YYYY-MM-DD')}
             format={"MM/DD/YYYY"}
-            customStyles={{dateInput: styles.datePicker, dateText: styles.datePickerText, dateTouchBody: styles.datePickerContainer}}
+            customStyles={{dateInput: styles.datePicker, dateText: styles.datePickerText, dateTouchBody: styles.datePickerContainer, btnTextConfirm: styles.datePickerConfirmText}}
             showIcon={false}
             confirmBtnText="Confirm"
             cancelBtnText="Cancel"
@@ -246,7 +246,7 @@ export default class SetupView extends Component {
             style={styles.birthtimePicker}
             date={this.state.birth_time}
             format={'hh:mm a'}
-            customStyles={{dateInput: styles.datePicker, dateText: styles.datePickerText, dateTouchBody: styles.datePickerContainer}}
+            customStyles={{dateInput: styles.datePicker, dateText: styles.datePickerText, dateTouchBody: styles.datePickerContainer, btnTextConfirm: styles.datePickerConfirmText}}
             onDateChange={this.onNewBirthTime}
             is24Hour={false}
             showIcon={false}
