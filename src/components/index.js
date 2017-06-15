@@ -45,8 +45,7 @@ export default class IndexView extends Component {
     AsyncStorage.getItem('@NatalCharts:loggedInUser')
       .then(req => JSON.parse(req))
       .then((user) => {
-        if (user == null) { return; }
-        console.log("found a user");
+        if (user == null || user.error) { return; }
         this.setState({logged_in: true, chart: user.chart, person: user.person});
         this.history.replace('/chart');
       })
@@ -61,7 +60,6 @@ export default class IndexView extends Component {
   }
 
   render() {
-    console.log(this.history.location);
     return (
       <Router history={this.history} getUserConfirmation={this.getUserConfirmation}>
         <Switch style={styles.container}>

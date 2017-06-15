@@ -11,7 +11,7 @@ import {
   Button,
   Text,
   TextInput,
-  TouchableHighlight,
+  TouchableOpacity,
   ScrollView,
   Platform,
   View
@@ -20,45 +20,99 @@ import {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#E7E7E7'
+    backgroundColor: '#febdff',
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-start',
+    paddingTop: 10
   },
-  header: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 20
+  scrollContainer: {
+    flex: 1
   },
   rowContainer: {
-    margin: 10
+    margin: 20,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingRight: 20
   },
   inputLabel: {
-    fontSize: 16,
-    marginLeft: 5
+    fontSize: 26,
+    marginLeft: 10,
+    marginRight: 10,
+    alignSelf: 'flex-end',
+    color: '#FFF'
+  },
+  inputLabelFullWidth: {
+    width: '100%',
+    fontSize: 32,
+    color: '#FFF'
+  },
+  inputFieldFullWidth: {
+    width: '100%'
   },
   inputField: {
-    flex: 1,
-    justifyContent: 'center',
-    width: '100%'
+    height: 40,
+    borderBottomColor: '#23346a',
+    borderBottomWidth: 1,
+    borderStyle: 'dotted',
+    padding: 5,
+    marginTop: 10,
+    alignItems: 'center'
   },
   inputTextField: {
     height: 40,
-    borderColor: '#8E8E8E',
-    borderWidth: 1,
-    backgroundColor: '#FFFFFF',
     padding: 5,
     marginTop: 10,
     alignItems: 'center',
-    fontSize: 16
+    fontSize: 26,
+    color: '#ff03d2',
+    width: '80%'
   },
-  inputDatePicker: {
-    marginTop: 10
+  datePicker: {
+    borderWidth: 0,
+    height: 100,
+    width: 200
+  },
+  datePickerContainer: {
+    height: 100,
+    width: 200,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  datePickerText: {
+    fontSize: 26,
+    color: '#ff03d2'
+  },
+  submitWrapper: {
+    flexGrow: 1,
+    justifyContent: 'flex-end'
+  },
+  buttonWrapper: {
+    height: 80,
+    backgroundColor: '#40cbe8',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  submitButton: {
+    color: '#FFF',
+    margin: 10,
+    fontSize: 26
   }
 });
 
-const SetupRow = ({label, ...props}) => (
+const SetupRow = ({title, ...props}) => (
   <View style={styles.rowContainer}>
-    <Text style={styles.inputLabel}>{label}</Text>
+    {title &&
+      <Text style={styles.inputLabelFullWidth}>{title}</Text>}
     {props.children}
   </View>
+);
+
+const SetupButton = ({text, onPress, disabled, ...props}) => (
+  <TouchableOpacity style={styles.buttonWrapper} onPress={onPress} disabled={disabled}>
+    <Text style={styles.submitButton}>{text}</Text>
+  </TouchableOpacity>
 );
 
 export default class SetupView extends Component {
@@ -116,7 +170,7 @@ export default class SetupView extends Component {
   }
 
   onCityValidated() {
-    let birth_date = moment(this.state.birth_date, 'YYYY-MM-DD');
+    let birth_date = moment(this.state.birth_date, 'MM/DD/YYYY');
     
     let birth_hour = this.state.birth_time.split(":")[0];
     let birth_min = this.state.birth_time.split(":")[1];
@@ -142,15 +196,10 @@ export default class SetupView extends Component {
   }
   
   onNewBirthdate(date) {
-    console.log("new birthdate: " + date);
-    
     this.setState({birth_date: date});
   }
   
   onNewBirthTime(date) {
-    console.log("new birthtime: " + date);
-    
-    console.log(date);
     this.setState({birth_time: date});
   }
 
@@ -160,47 +209,49 @@ export default class SetupView extends Component {
     let minDate = moment('19400101','YYYYMMDD');
 
     return (
-      <ScrollView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
-        <Text style={styles.header}>Hi there, what's your name?</Text>
-        <SetupRow label='Name'>
-          <TextInput style={[styles.inputField, styles.inputTextField]}
+        <SetupRow title='My name is'>
+          <TextInput style={[styles.inputFieldFullWidth, styles.inputTextField]}
                      onChangeText={(name) => this.setState({'name': name})}
                      value={this.state.name} />
         </SetupRow>
-        <SetupRow label='Birthday' style={styles.inputField}>
+        <SetupRow title='I was born on'>
           <DatePicker
             style={styles.inputField}
             date={this.state.birth_date}
             onDateChange={this.onNewBirthdate}
             minDate={minDate.format('YYYY-MM-DD')}
             maxDate={maxDate.format('YYYY-MM-DD')}
+            format={"MM/DD/YYYY"}
+            customStyles={{dateInput: styles.datePicker, dateText: styles.datePickerText, dateTouchBody: styles.datePickerContainer}}
             showIcon={false}
             confirmBtnText="Confirm"
             cancelBtnText="Cancel"
             mode='date' />
-        </SetupRow>
-        <SetupRow label='Birth time'>
+          <Text style={styles.inputLabel}>at</Text>
           <DatePicker
             style={styles.inputField}
             date={this.state.birth_time}
             format={'HH:mm'}
+            customStyles={{dateInput: styles.datePicker, dateText: styles.datePickerText, dateTouchBody: styles.datePickerContainer}}
             onDateChange={this.onNewBirthTime}
             is24Hour={false}
             showIcon={false}
             confirmBtnText="Confirm"
             cancelBtnText="Cancel"
             mode='time' />
-        </SetupRow>
-        <SetupRow label='Birth city'>
-          <TextInput style={[styles.inputField, styles.inputTextField]}
+          <Text style={styles.inputLabel}>in</Text>
+          <TextInput style={[styles.inputTextField]}
                      onChangeText={(text) => this.setState({'birth_city': text})}
                      value={this.state.birth_city} />
         </SetupRow>
-        <Button
-          onPress={this.onSubmitClick}
-          title={this.state.is_processing ? "Taking off..." : "Let's do this"}
-          disabled={this.state.is_processing || !allFieldsHaveContents} />
+        <View style={styles.submitWrapper}>
+          <SetupButton
+            text={this.state.is_processing ? "Taking off..." : "Let's do this"}
+            onPress={this.onSubmitClick}
+            disabled={this.state.is_processing || !allFieldsHaveContents} />
+        </View>
       </View>
       </ScrollView>
     );
