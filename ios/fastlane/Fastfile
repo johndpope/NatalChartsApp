@@ -16,12 +16,13 @@ platform :ios do
 
     emails = values[:test_email] ? values[:test_email] : ['hi@kasra.codes'] # You can list more emails here
     groups = values[:test_email] ? nil : nil # You can define groups on the web and reference them here
+    notes = values[:notes] ? values[:notes] : ''
 
     crashlytics(api_token: 'c632577cff3855aa1a09f657e44d98ecf96cc9fc',
              build_secret: 'b8a8d85e8fc0c4024fcc76fc3f7aadc04c99a178bb3987f40f89db01e7e8a9d6',
                    emails: emails,
                    groups: groups,
-                    notes: 'Distributed with fastlane', # Check out the changelog_from_git_commits action
+                    notes: notes, # Check out the changelog_from_git_commits action
             notifications: true) # Should this distribution notify your testers via email?
 
     # for all available options run `fastlane action crashlytics`
