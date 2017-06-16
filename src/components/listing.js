@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import Swiper from 'react-native-swiper';
+import LinearGradient from 'react-native-linear-gradient';
 import SvgImage from './SvgImage';
+import Chroma from 'chroma-js';
 
 import {
   AsyncStorage,
@@ -23,18 +25,23 @@ import { Link } from 'react-router-native'
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#E7E7E7',
     paddingTop: (Platform.OS === 'ios') ? 10 : 0
   },
   title: {
     fontSize: 22,
-    marginBottom: 10,
+    marginBottom: 10
+  },
+  textBlack: {
     color: '#000'
+  },
+  textWhite: {
+    color: '#FFF'
   },
   header: {
     height: 60,
     paddingTop: (Platform.OS === 'ios') ? 10 : 0,
-    paddingLeft: 10
+    paddingLeft: 10,
+    backgroundColor: 'rgba(0, 0, 0, 0)'
   },
   page: {
     flex: 1,
@@ -46,18 +53,15 @@ const styles = StyleSheet.create({
   textRow: {
     fontSize: 18,
     marginBottom: 10,
-    marginTop: 10,
-    color: '#000'
+    marginTop: 10
   },
   textRowBottomOnly: {
     fontSize: 18,
-    marginBottom: 10,
-    color: '#000'
+    marginBottom: 10
   },
   textRowSmall: {
     fontSize: 18,
-    marginBottom: 5,
-    color: '#000'
+    marginBottom: 5
   },
   textSection: {
     marginTop: 10,
@@ -97,76 +101,95 @@ const styles = StyleSheet.create({
   }
 });
 
-const Title = ({children, ...props}) => (
-  <Text style={styles.title}>{children}</Text>
+const Title = ({children, useWhiteText, ...props}) => (
+  <Text style={[styles.title, useWhiteText ? styles.textWhite : styles.textBlack]}>{children}</Text>
 );
 
-const Row = ({children, ...props}) => (
-  <Text style={styles.textRow}>{children}</Text>
+const Row = ({children, useWhiteText, ...props}) => (
+  <Text style={[styles.textRow, useWhiteText ? styles.textWhite : styles.textBlack]}>{children}</Text>
 );
 
-const ShortRow = ({children, ...props}) => (
-  <Text style={styles.textRowSmall}>{children}</Text>
+const ShortRow = ({children, useWhiteText, ...props}) => (
+  <Text style={[styles.textRowSmall, useWhiteText ? styles.textWhite : styles.textBlack]}>{children}</Text>
 );
 
-const TopRow = ({children, ...props}) => (
-  <Text style={styles.textRowBottomOnly}>{children}</Text>
+const TopRow = ({children, useWhiteText,  ...props}) => (
+  <Text style={[styles.textRowBottomOnly, useWhiteText ? styles.textWhite : styles.textBlack]}>{children}</Text>
 );
 
-const PageHeader = ({name, planet, sign, signName, ...props}) => (
-  <View style={styles.center}>
-    <Title>{name}</Title>
-    {planet.icon &&
-      <SvgImage styles={styles.icon} width="80" height="80" source={{uri: planet.icon}} />
-    }
-    <Row>{signName}</Row>
-    <SvgImage style={styles.row} width="60" height="60" source={{uri: sign.icon}} />
-  </View>
-);
+const PageHeader = ({name, planet, sign, signName, backgroundColor, ...props}) => {
+  let whiteText = isReadable(backgroundColor, '#FFF') ? true : false;
 
-const SignInfo = ({signName, sign, planetName, planet, ...props}) => (
-  <View style={styles.mainSection}>
-    <Row>Your {planetName}, {planet.title}, is in {signName}, {sign.title}.</Row>
-    <View>
-      <ShortRow>Element: {sign.element}</ShortRow>
-      <ShortRow>Quality: {sign.quality}</ShortRow>
-      <ShortRow>Ruler: {sign.ruler}</ShortRow>
+  return (
+    <View style={styles.center}>
+      <Title useWhiteText={whiteText}>{name}</Title>
+      {planet.icon &&
+        <SvgImage styles={[styles.icon, styles.textWhite]} width="80" height="80" source={{uri: planet.icon}} />
+      }
+      <Row useWhiteText={whiteText}>{signName}</Row>
+      <SvgImage style={styles.row} width="60" height="60" source={{uri: sign.icon}} />
     </View>
-    <Row>A few lines about {planetName} in {signName} should go here. Personality traits, ways to spot one in the wild, some advice, maybe?</Row>
-  </View>
-);
+  )
+};
 
-const HouseInfo = ({name, house, ...props}) => (
-  <View style={styles.section}>
-    <ShortRow>{name} in {house.title}.</ShortRow>
-    <ShortRow>{house.title}: {house.description}</ShortRow>
-  </View>
-);
+const SignInfo = ({signName, sign, planetName, planet, backgroundColor, ...props}) => {
+  let whiteText = isReadable(backgroundColor, '#FFF') ? true : false;
 
-const AspectRow = ({aspect, ...props}) => {
+  return (
+    <View style={styles.mainSection}>
+      <Row useWhiteText={whiteText}>Your {planetName}, {planet.title}, is in {signName}, {sign.title}.</Row>
+      <View>
+        <ShortRow useWhiteText={whiteText}>Element: {sign.element}</ShortRow>
+        <ShortRow useWhiteText={whiteText}>Quality: {sign.quality}</ShortRow>
+        <ShortRow useWhiteText={whiteText}>Ruler: {sign.ruler}</ShortRow>
+      </View>
+      <Row useWhiteText={whiteText}>A few lines about {planetName} in {signName} should go here. Personality traits, ways to spot one in the wild, some advice, maybe?</Row>
+    </View>
+  )
+};
+
+const HouseInfo = ({name, house, backgroundColor, ...props}) => {
+  let whiteText = isReadable(backgroundColor, '#FFF') ? true : false;
+
+  return (
+    <View style={styles.section}>
+      <ShortRow useWhiteText={whiteText}>{name} in {house.title}.</ShortRow>
+      <ShortRow useWhiteText={whiteText}>{house.title}: {house.description}</ShortRow>
+    </View>
+  )
+};
+
+const AspectRow = ({aspect, useWhiteText, ...props}) => {
   let firstName = aspect.first === "House1" ? "Ascendant" : aspect.first;
   let secondName = aspect.second;
   let aspectType = aspect.type_name;
   let orb = aspect.orb.toFixed(2);
 
   return (
-    <ShortRow>{firstName} {aspectType} {secondName} ({orb}°)</ShortRow>
+    <ShortRow useWhiteText={useWhiteText}>{firstName} {aspectType} {secondName} ({orb}°)</ShortRow>
   )
 };
 
-const AspectInfo = ({aspects, ...props}) => {
+const AspectInfo = ({aspects, backgroundColor, ...props}) => {
   if (!aspects) { return <View />; }
+  
+  let whiteText = isReadable(backgroundColor, '#FFF') ? true : false;
+
   return (
     <View style={styles.section}>
-      <TopRow>Aspects</TopRow>
+      <TopRow useWhiteText={whiteText}>Aspects</TopRow>
       {aspects.map((aspect, key) => {
         return (
-          <AspectRow key={key} aspect={aspect} />
+          <AspectRow key={key} aspect={aspect} useWhiteText={whiteText} />
         )
       })}
     </View>
   )
 };
+
+const isReadable = (backgroundColor, textColor) => {
+  return Chroma.contrast(backgroundColor, textColor) > 4.5 ? true : false;
+}
 
 export default class ListingView extends Component {
   constructor(props) {
@@ -179,8 +202,11 @@ export default class ListingView extends Component {
     }
 
     this.state = {
-      pages: pages
+      pages: pages,
+      index: 0
     }
+    
+    this.onNewPage = this.onNewPage.bind(this);
   }
 
   renderPage(page) {
@@ -188,17 +214,27 @@ export default class ListingView extends Component {
     let sign = SIGNS_WITH_INFO[planet.sign];
     let planetInfo = PLANETS_WITH_INFO[page.name];
     let houseInfo = HOUSES_WITH_INFO[page.val.house];
-
+    let backgroundColor = sign.startColor;
+    
     return (
       <ScrollView key={page.name}>
         <View style={styles.page}>
-          <PageHeader name={page.name} planet={planetInfo} sign={sign} signName={planet.sign} />
-          <SignInfo planetName={page.name} planet={planetInfo} signName={planet.sign} sign={sign} />
-          <HouseInfo name={page.name} house={houseInfo} />
-          <AspectInfo aspects={page.val.aspects} />
+          <PageHeader name={page.name} planet={planetInfo} sign={sign} signName={planet.sign} backgroundColor={backgroundColor} />
+          <SignInfo planetName={page.name} planet={planetInfo} signName={planet.sign} sign={sign} backgroundColor={backgroundColor} />
+          <HouseInfo name={page.name} house={houseInfo} backgroundColor={backgroundColor} />
+          <AspectInfo aspects={page.val.aspects} backgroundColor={backgroundColor} />
         </View>
       </ScrollView>
     )
+  }
+  
+  getColorsForPage(page) {
+    let sign = SIGNS_WITH_INFO[page.val.planet.sign];
+    return [sign.startColor, sign.endColor];
+  }
+  
+  onNewPage(e, state, context) {
+    this.setState({index: state.index});
   }
 
   render() {
@@ -206,9 +242,12 @@ export default class ListingView extends Component {
     let birthtime = moment.unix(person.birthdate).utc().format("dddd, MMMM Do YYYY, h:mm a");
 
     let pages = this.state.pages.map((page, key) => this.renderPage(page));
+    let colorValues = this.state.pages.map((page, key) => this.getColorsForPage(page));
+    let colors = colorValues[this.state.index];
+    let useWhiteText = isReadable(colors[0], '#FFF');
 
     return (
-      <View style={styles.container}>
+      <LinearGradient colors={colors} style={styles.container}>
         <View style={styles.header}>
           <Link
             to={`/setup`}
@@ -216,14 +255,14 @@ export default class ListingView extends Component {
             underlayColor='#f0f4f7'>
               <Text>Log out</Text>
           </Link>
-          <Text style={styles.headerText}>{birthtime}</Text>
+          <Text style={[styles.headerText, useWhiteText ? styles.textWhite : styles.textBlack]}>{birthtime}</Text>
         </View>
         {this.state.pages && 
-          <Swiper showsButtons>
+          <Swiper showsButtons onMomentumScrollEnd={this.onNewPage}>
             {pages}
           </Swiper>
         }
-      </View>
+      </LinearGradient>
     )
   }
 }

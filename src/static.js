@@ -96,7 +96,9 @@ const SIGNS_WITH_INFO = {
     "element": "Fire",
     "quality": "Cardinal",
     "ruler": "Mars",
-    "dates": "3/20 - 4/19"
+    "dates": "3/20 - 4/19",
+    "startColor": "#58A054",
+    "endColor": "#FD500B"
   },
   "Taurus": {
     "icon": "https://cdn.glitch.com/e4e4a6b3-d941-4ce7-83d9-950d6528f824%2Fic_taurus.svg",
@@ -104,7 +106,9 @@ const SIGNS_WITH_INFO = {
     "element": "Earth",
     "quality": "Fixed",
     "ruler": "Venus",
-    "dates": "4/19 - 5/20"
+    "dates": "4/19 - 5/20",
+    "startColor": "#127A7D",
+    "endColor": "#FF8E3B"
   },
   "Gemini": {
     "icon": "https://cdn.glitch.com/e4e4a6b3-d941-4ce7-83d9-950d6528f824%2Fic_gemini.svg",
@@ -112,7 +116,9 @@ const SIGNS_WITH_INFO = {
     "element": "Air",
     "quality": "Mutable",
     "ruler": "Mercury",
-    "dates": "5/20 - 6/20"
+    "dates": "5/20 - 6/20",
+    "startColor": "#91B9BB",
+    "endColor": "#F49DF5"
   },
   "Cancer": {
     "icon": "https://cdn.glitch.com/e4e4a6b3-d941-4ce7-83d9-950d6528f824%2Fic_cancer.svg",
@@ -120,7 +126,9 @@ const SIGNS_WITH_INFO = {
     "element": "Water",
     "quality": "Cardinal",
     "ruler": "Moon",
-    "dates": "6/20 - 7/22"
+    "dates": "6/20 - 7/22",
+    "startColor": "#91B9BB",
+    "endColor": "#58A054"
   },
   "Leo": {
     "icon": "https://cdn.glitch.com/e4e4a6b3-d941-4ce7-83d9-950d6528f824%2Fic_leo.svg",
@@ -128,7 +136,9 @@ const SIGNS_WITH_INFO = {
     "element": "Fire",
     "quality": "Fixed",
     "ruler": "Sun",
-    "dates": "7/22 - 8/22"
+    "dates": "7/22 - 8/22",
+    "startColor": "#FF8E3B",
+    "endColor": "#DF61AB"
   },
   "Virgo": {
     "icon": "https://cdn.glitch.com/e4e4a6b3-d941-4ce7-83d9-950d6528f824%2Fic_virgo.svg",
@@ -136,7 +146,9 @@ const SIGNS_WITH_INFO = {
     "element": "Earth",
     "quality": "Mutable",
     "ruler": "Mercury",
-    "dates": "8/22 - 9/22"
+    "dates": "8/22 - 9/22",
+    "startColor": "#58A054",
+    "endColor": "#FD500B"
   },
   "Libra" : {
     "icon": "https://cdn.glitch.com/e4e4a6b3-d941-4ce7-83d9-950d6528f824%2Fic_libra.svg",
@@ -144,7 +156,9 @@ const SIGNS_WITH_INFO = {
     "element": "Air",
     "quality": "Cardinal",
     "ruler": "Venus",
-    "dates": "9/22 - 10/23"
+    "dates": "9/22 - 10/23",
+    "startColor": "#5467A1",
+    "endColor": "#DF61AB"
   },
   "Scorpio": {
     "icon": "https://cdn.glitch.com/e4e4a6b3-d941-4ce7-83d9-950d6528f824%2Fic_scorpio.svg",
@@ -152,7 +166,9 @@ const SIGNS_WITH_INFO = {
     "element": "Water",
     "quality": "Fixed",
     "ruler": "Mars",
-    "dates": "10/23 - 11/21"
+    "dates": "10/23 - 11/21",
+    "startColor": "#127A7D",
+    "endColor": "#5467A1"
   },
   "Sagittarius": {
     "icon": "https://cdn.glitch.com/e4e4a6b3-d941-4ce7-83d9-950d6528f824%2Fic_sagittarius.svg",
@@ -160,7 +176,9 @@ const SIGNS_WITH_INFO = {
     "element": "Fire",
     "quality": "Mutable",
     "ruler": "Jupiter",
-    "dates": "11/21 - 12/21"
+    "dates": "11/21 - 12/21",
+    "startColor": "#FD500B",
+    "endColor": "#91B9BB"
   },
   "Capricorn": {
     "icon": "https://cdn.glitch.com/e4e4a6b3-d941-4ce7-83d9-950d6528f824%2Fic_capricorn.svg",
@@ -168,7 +186,9 @@ const SIGNS_WITH_INFO = {
     "element": "Earth",
     "quality": "Cardinal",
     "ruler": "Saturn",
-    "dates": "12/21 - 1/19"
+    "dates": "12/21 - 1/19",
+    "startColor": "#F0C8CA",
+    "endColor": "#58A054"
   },
   "Aquarius": {
     "icon": "https://cdn.glitch.com/e4e4a6b3-d941-4ce7-83d9-950d6528f824%2Fic_aquarius.svg",
@@ -176,7 +196,9 @@ const SIGNS_WITH_INFO = {
     "element": "Air",
     "quality": "Fixed",
     "ruler": "Uranus",
-    "dates": "1/19 - 2/18"
+    "dates": "1/19 - 2/18",
+    "startColor": "#F0C8CA",
+    "endColor": "#91B9BB"
   },
   "Pisces": {
     "icon": "https://cdn.glitch.com/e4e4a6b3-d941-4ce7-83d9-950d6528f824%2Fic_pisces.svg",
@@ -184,7 +206,9 @@ const SIGNS_WITH_INFO = {
     "element": "Water",
     "quality": "Mutable",
     "ruler": "Neptune",
-    "dates": "2/18 - 3/20"
+    "dates": "2/18 - 3/20",
+    "startColor": "#5467A1",
+    "endColor": "#F0C8CA"
   }
 };
 
