@@ -11,7 +11,6 @@ import {
   Text,
   TextInput,
   Linking,
-  TouchableHighlight,
   ScrollView,
   View
 } from 'react-native';
@@ -20,11 +19,15 @@ import { PLANET_SORT_ORDER, SIGNS_WITH_INFO, PLANETS_WITH_INFO, HOUSES_WITH_INFO
 
 import { Link } from 'react-router-native'
 
-
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#E7E7E7',
     paddingTop: 10
+  },
+  title: {
+    fontSize: 22,
+    marginBottom: 10,
+    color: '#000'
   },
   header: {
     height: 60,
@@ -37,39 +40,95 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 5,
     marginLeft: 20,
-    marginRight: 20
+    marginRight: 20,
+    paddingBottom: 80
   },
-  text: {
+  textRow: {
     fontSize: 18,
     marginBottom: 10,
+    marginTop: 10,
+    color: '#000'
+  },
+  textRowSmall: {
+    fontSize: 18,
+    marginBottom: 5,
     color: '#000'
   },
   mainSection: {
     marginTop: 10,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginLeft: 10,
+    marginRight: 10
   },
   section: {
-    marginTop: 10
+    marginTop: 10,
+    marginLeft: 10,
+    marginRight: 10
   },
-  headerExplainText: {
+  headerText: {
     fontSize: 15,
     textAlign: 'center',
     margin: 5
-  },
-  pageHeader: {
-    fontSize: 20,
-    alignSelf: 'center',
-    color: '#000'
   },
   row: {
     marginTop: 10,
     marginBottom: 10
   },
   setupButton: {
-    
+    marginTop: 10
+  },
+  center: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 10,
+    marginRight: 10
   }
 });
+
+const Title = ({text, ...props}) => (
+  <Text style={styles.title}>{text}</Text>
+);
+
+const Row = ({text, ...props}) => (
+  <Text style={styles.textRow}>{text}</Text>
+);
+
+const ShortRow = ({text, ...props}) => (
+  <Text style={styles.textRowSmall}>{text}</Text>
+);
+
+const PageHeader = ({name, planet, ...props}) => (
+  <View style={styles.center}>
+    <Title text={name} />
+    {planet.icon &&
+      <SvgImage styles={styles.icon} width="80" height="80" source={{uri: planet.icon}} />
+    }
+    <Row text={planet.title} />
+    <Row text={planet.description} />
+  </View>
+);
+
+const SignInfo = ({name, sign, planetName, ...props}) => (
+  <View style={styles.mainSection}>
+    <Row text={name} />
+    <SvgImage style={styles.row} width="60" height="60" source={{uri: sign.icon}} />
+    <Row text={sign.title} />
+    <View>
+      <ShortRow text={"Element: " + sign.element} />
+      <ShortRow text={"Quality: " + sign.quality} />
+      <ShortRow text={"Ruler: " + sign.ruler} />
+    </View>
+    <Row text={`A few lines about ${name} and ${planetName} in ${name} should go here. Traits, ways to spot one, some quotes maybe?`} />
+  </View>
+);
+
+const HouseInfo = ({name, house, ...props}) => (
+  <View style={styles.section}>
+    <ShortRow text={`${name} in ${house.title}.`} />
+    <ShortRow text={`${house.title}: ${house.description}`} />
+  </View>
+);
 
 export default class ListingView extends Component {
   constructor(props) {
@@ -95,26 +154,9 @@ export default class ListingView extends Component {
     return (
       <ScrollView key={page.name}>
         <View style={styles.page}>
-          {planetInfo.icon && 
-            <SvgImage styles={styles.row} width="80" height="80" source={{uri: planetInfo.icon}} />
-          }
-          <Text style={[styles.pageHeader, styles.text, styles.row]}>{page.name} - {planetInfo.title}</Text>
-          <Text style={[styles.pageHeader, styles.text]}>{planetInfo.description}</Text>
-          <View style={styles.mainSection}>
-            <SvgImage style={styles.row} width="60" height="60" source={{uri: sign.icon}} />
-            <Text style={styles.text}>{planet.sign}</Text>
-            <Text style={styles.text}>{sign.title}</Text>
-          </View>
-          <View style={styles.section}>
-            <Text style={styles.text}>Element: {sign.element}</Text>
-            <Text style={styles.text}>Quality: {sign.quality}</Text>
-            <Text style={styles.text}>Ruler: {sign.ruler}</Text>
-          </View>
-          <View style={styles.section}>
-            <Text style={styles.text}>A few lines about {planet.sign} and {page.name} in {planet.sign} should go here. Traits, ways to spot one, some quotes maybe?</Text>
-            <Text style={styles.text}>{page.name} in {houseInfo.title}.</Text>
-            <Text style={styles.text}>{houseInfo.title}: {houseInfo.description}</Text>
-          </View>
+          <PageHeader name={page.name} planet={planetInfo} />
+          <SignInfo planetName={page.name} name={planet.sign} sign={sign} />
+          <HouseInfo name={page.name} house={houseInfo} />
         </View>
       </ScrollView>
     )
@@ -135,7 +177,7 @@ export default class ListingView extends Component {
             underlayColor='#f0f4f7'>
               <Text>Log out</Text>
           </Link>
-          <Text style={styles.headerExplainText}>{birthtime}</Text>
+          <Text style={styles.headerText}>{birthtime}</Text>
         </View>
         {this.state.pages && 
           <Swiper showsButtons>
