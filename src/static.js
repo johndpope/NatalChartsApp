@@ -191,53 +191,53 @@ const SIGNS_WITH_INFO = {
 const PLANETS_WITH_INFO = {
   "Sun": {
     "icon": "https://cdn.glitch.com/e4e4a6b3-d941-4ce7-83d9-950d6528f824%2Fic_sun.svg?1495986813996",
-    "title": "Your base personality",
+    "title": "your base personality",
     "description": "The chisel that lays the rough outline of your character."
   }, 
   "Moon": {
     "icon": "https://cdn.glitch.com/e4e4a6b3-d941-4ce7-83d9-950d6528f824%2Fic_moon.svg?1495986815349",
-    "title": "Emotional center",
+    "title": "your emotional center",
     "description": "The source of your deepest emotions. Controls all things internal, from your guiding inner voice to the layout of your home."
   },
   "Ascendant": {
-    "title": "The mask you wear",
+    "title": "the mask you wear",
     "description": "Who you want to be, how you approach things, the personality you deault to when threatened or uncomfortable."
   },
   "Mercury": {
     "icon": "https://cdn.glitch.com/e4e4a6b3-d941-4ce7-83d9-950d6528f824%2Fic_mercury.svg?1495986815195",
-    "title": "Communications Center",
+    "title": "communications Center",
     "description": "Source of the hyper-rational side of your brain. In charge of how you communicate, via all sources. Everything from how you externalize an idea you've been thinking about for months, to how you prefer to text."
   }, 
   "Venus": {
     "icon": "https://cdn.glitch.com/e4e4a6b3-d941-4ce7-83d9-950d6528f824%2Fic_venus.svg?1495986814230",
-    "title": "Your heart and love life",
+    "title": "your heart and love life",
     "description": "What you like, who you like, and what you like to like with them."
   }, 
   "Mars": {
     "icon": "https://cdn.glitch.com/e4e4a6b3-d941-4ce7-83d9-950d6528f824%2Fic_mars.svg?1495986815095",
-    "title": "War and ambition",
+    "title": "war and ambition",
     "description": "Your drive, at everything from getting out of bed in the morning to war. How you deal with competition, and how you plan to outlast it"
   }, 
   "Jupiter": {
     "icon": "https://cdn.glitch.com/e4e4a6b3-d941-4ce7-83d9-950d6528f824%2Fic_jupiter.svg?1495986814784",
-    "title": "Wealth and opportunity",
+    "title": "wealth and opportunity",
     "description": "How you make money, how you find stability. Your source of confidence and faith. Source of reflection and connecting of the dots."
   },
   "Saturn": {
     "icon": "https://cdn.glitch.com/e4e4a6b3-d941-4ce7-83d9-950d6528f824%2Fic_saturn.svg?1495986813967",
-    "title": "Rule and routine.",
+    "title": "wule and routine",
     "description": "Your source of willpower, how you tackle the menial, how you handle the rules and what you're supposed to do."
   },
   "Uranus": {
-    "title": "Surprise and excitement.",
+    "title": "surprise and excitement",
     "description": "How do you break the mold?"
   },
   "Neptune": {
-    "title": "Hopes and dreams.",
+    "title": "hopes and dreams",
     "description": "Your source of inspiration, where your wildest dreams come from. Artistic center."
   },
   "Pluto": {
-    "title": "Center of transformation.",
+    "title": "center of transformation",
     "description": "How do you handle coming of age? Your step-style throughout life, source of all change (and obsessions)."
   }
 };

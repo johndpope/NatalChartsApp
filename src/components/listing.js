@@ -10,8 +10,10 @@ import {
   FlatList,
   Text,
   TextInput,
+  TouchableHighlight,
   Linking,
   ScrollView,
+  Platform,
   View
 } from 'react-native';
 
@@ -22,7 +24,7 @@ import { Link } from 'react-router-native'
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#E7E7E7',
-    paddingTop: 10
+    paddingTop: (Platform.OS === 'ios') ? 10 : 0
   },
   title: {
     fontSize: 22,
@@ -31,17 +33,15 @@ const styles = StyleSheet.create({
   },
   header: {
     height: 60,
-    paddingTop: 10,
+    paddingTop: (Platform.OS === 'ios') ? 10 : 0,
     paddingLeft: 10
   },
   page: {
     flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
     marginTop: 5,
     marginLeft: 20,
     marginRight: 20,
-    paddingBottom: 80
+    paddingBottom: 100
   },
   textRow: {
     fontSize: 18,
@@ -49,15 +49,26 @@ const styles = StyleSheet.create({
     marginTop: 10,
     color: '#000'
   },
+  textRowBottomOnly: {
+    fontSize: 18,
+    marginBottom: 10,
+    color: '#000'
+  },
   textRowSmall: {
     fontSize: 18,
     marginBottom: 5,
     color: '#000'
   },
+  textSection: {
+    marginTop: 10,
+    marginLeft: 10,
+    marginRight: 10,
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap'
+  },
   mainSection: {
     marginTop: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
     marginLeft: 10,
     marginRight: 10
   },
@@ -86,49 +97,76 @@ const styles = StyleSheet.create({
   }
 });
 
-const Title = ({text, ...props}) => (
-  <Text style={styles.title}>{text}</Text>
+const Title = ({children, ...props}) => (
+  <Text style={styles.title}>{children}</Text>
 );
 
-const Row = ({text, ...props}) => (
-  <Text style={styles.textRow}>{text}</Text>
+const Row = ({children, ...props}) => (
+  <Text style={styles.textRow}>{children}</Text>
 );
 
-const ShortRow = ({text, ...props}) => (
-  <Text style={styles.textRowSmall}>{text}</Text>
+const ShortRow = ({children, ...props}) => (
+  <Text style={styles.textRowSmall}>{children}</Text>
 );
 
-const PageHeader = ({name, planet, ...props}) => (
+const TopRow = ({children, ...props}) => (
+  <Text style={styles.textRowBottomOnly}>{children}</Text>
+);
+
+const PageHeader = ({name, planet, sign, signName, ...props}) => (
   <View style={styles.center}>
-    <Title text={name} />
+    <Title>{name}</Title>
     {planet.icon &&
       <SvgImage styles={styles.icon} width="80" height="80" source={{uri: planet.icon}} />
     }
-    <Row text={planet.title} />
-    <Row text={planet.description} />
+    <Row>{signName}</Row>
+    <SvgImage style={styles.row} width="60" height="60" source={{uri: sign.icon}} />
   </View>
 );
 
-const SignInfo = ({name, sign, planetName, ...props}) => (
+const SignInfo = ({signName, sign, planetName, planet, ...props}) => (
   <View style={styles.mainSection}>
-    <Row text={name} />
-    <SvgImage style={styles.row} width="60" height="60" source={{uri: sign.icon}} />
-    <Row text={sign.title} />
+    <Row>Your {planetName}, {planet.title}, is in {signName}, {sign.title}.</Row>
     <View>
-      <ShortRow text={"Element: " + sign.element} />
-      <ShortRow text={"Quality: " + sign.quality} />
-      <ShortRow text={"Ruler: " + sign.ruler} />
+      <ShortRow>Element: {sign.element}</ShortRow>
+      <ShortRow>Quality: {sign.quality}</ShortRow>
+      <ShortRow>Ruler: {sign.ruler}</ShortRow>
     </View>
-    <Row text={`A few lines about ${name} and ${planetName} in ${name} should go here. Traits, ways to spot one, some quotes maybe?`} />
+    <Row>A few lines about {planetName} in {signName} should go here. Personality traits, ways to spot one in the wild, some advice, maybe?</Row>
   </View>
 );
 
 const HouseInfo = ({name, house, ...props}) => (
   <View style={styles.section}>
-    <ShortRow text={`${name} in ${house.title}.`} />
-    <ShortRow text={`${house.title}: ${house.description}`} />
+    <ShortRow>{name} in {house.title}.</ShortRow>
+    <ShortRow>{house.title}: {house.description}</ShortRow>
   </View>
 );
+
+const AspectRow = ({aspect, ...props}) => {
+  let firstName = aspect.first === "House1" ? "Ascendant" : aspect.first;
+  let secondName = aspect.second;
+  let aspectType = aspect.type_name;
+  let orb = aspect.orb.toFixed(2);
+
+  return (
+    <ShortRow>{firstName} {aspectType} {secondName} ({orb}°)</ShortRow>
+  )
+};
+
+const AspectInfo = ({aspects, ...props}) => {
+  if (!aspects) { return <View />; }
+  return (
+    <View style={styles.section}>
+      <TopRow>Aspects</TopRow>
+      {aspects.map((aspect, key) => {
+        return (
+          <AspectRow key={key} aspect={aspect} />
+        )
+      })}
+    </View>
+  )
+};
 
 export default class ListingView extends Component {
   constructor(props) {
@@ -154,9 +192,10 @@ export default class ListingView extends Component {
     return (
       <ScrollView key={page.name}>
         <View style={styles.page}>
-          <PageHeader name={page.name} planet={planetInfo} />
-          <SignInfo planetName={page.name} name={planet.sign} sign={sign} />
+          <PageHeader name={page.name} planet={planetInfo} sign={sign} signName={planet.sign} />
+          <SignInfo planetName={page.name} planet={planetInfo} signName={planet.sign} sign={sign} />
           <HouseInfo name={page.name} house={houseInfo} />
+          <AspectInfo aspects={page.val.aspects} />
         </View>
       </ScrollView>
     )
