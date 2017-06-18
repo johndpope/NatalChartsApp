@@ -20,7 +20,7 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
-		222CEFC2437E44E5AD6C7671 /* TenorSans.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A6806B12D0384DC396C8C6F7 /* TenorSans.ttf */; };
+		1FBE85B8EAC94D94A409DAC4 /* Karla-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0221F85572E24193B0CD7AFA /* Karla-Regular.ttf */; };
 		351EAAA48BCC403EBABC3249 /* libRNSVG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEF72FB0E6BE45179AEA72C2 /* libRNSVG.a */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		67D4C5061EF35D86005A4EC1 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 67D4C5041EF35D86005A4EC1 /* Crashlytics.framework */; };
@@ -251,6 +251,7 @@
 		00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTVibration.xcodeproj; path = "../node_modules/react-native/Libraries/Vibration/RCTVibration.xcodeproj"; sourceTree = "<group>"; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* NatalChartsAppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NatalChartsAppTests.m; sourceTree = "<group>"; };
+		0221F85572E24193B0CD7AFA /* Karla-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Karla-Regular.ttf"; path = "../assets/fonts/Karla-Regular.ttf"; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* NatalChartsApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NatalChartsApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -411,6 +412,7 @@
 			isa = PBXGroup;
 			children = (
 				A6806B12D0384DC396C8C6F7 /* TenorSans.ttf */,
+				0221F85572E24193B0CD7AFA /* Karla-Regular.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -831,7 +833,7 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				222CEFC2437E44E5AD6C7671 /* TenorSans.ttf in Resources */,
+				1FBE85B8EAC94D94A409DAC4 /* Karla-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

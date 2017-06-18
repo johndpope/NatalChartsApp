@@ -3,6 +3,9 @@
 .DS_Store
 
 ios/fastlane/report.xml
+ios/*.cer
+ios/*.mobileprovision
+ios/*.dSYM.zip
 
 # Xcode
 #
