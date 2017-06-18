@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
     paddingTop: (Platform.OS === 'ios') ? 10 : 0
   },
   title: {
+    fontFamily: 'TenorSans',
     fontSize: 22,
     marginBottom: 10
   },
@@ -51,15 +52,18 @@ const styles = StyleSheet.create({
     paddingBottom: 100
   },
   textRow: {
+    fontFamily: 'TenorSans',
     fontSize: 18,
     marginBottom: 10,
     marginTop: 10
   },
   textRowBottomOnly: {
+    fontFamily: 'TenorSans',
     fontSize: 18,
     marginBottom: 10
   },
   textRowSmall: {
+    fontFamily: 'TenorSans',
     fontSize: 18,
     marginBottom: 5
   },
@@ -82,6 +86,7 @@ const styles = StyleSheet.create({
     marginRight: 10
   },
   headerText: {
+    fontFamily: 'TenorSans',
     fontSize: 15,
     textAlign: 'center',
     margin: 5
