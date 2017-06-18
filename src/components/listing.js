@@ -137,13 +137,13 @@ const SignInfo = ({signName, sign, planetName, planet, backgroundColor, ...props
 
   return (
     <View style={styles.mainSection}>
-      <Row useWhiteText={whiteText}>Your {planetName}, {planet.title}, is in {signName}, {sign.title}.</Row>
+      <Row useWhiteText={whiteText}>{planetName}, {planet.title}, in {signName}, {sign.title}.</Row>
       <View>
         <ShortRow useWhiteText={whiteText}>Element: {sign.element}</ShortRow>
         <ShortRow useWhiteText={whiteText}>Quality: {sign.quality}</ShortRow>
         <ShortRow useWhiteText={whiteText}>Ruler: {sign.ruler}</ShortRow>
       </View>
-      <Row useWhiteText={whiteText}>A few lines about {planetName} in {signName} should go here. Personality traits, ways to spot one in the wild, some advice, maybe?</Row>
+      <Row useWhiteText={whiteText}>{planet.description} A few lines about {planetName} in {signName} should go here. Personality traits, ways to spot one in the wild, some advice, maybe?</Row>
     </View>
   )
 };
@@ -160,8 +160,8 @@ const HouseInfo = ({name, house, backgroundColor, ...props}) => {
 };
 
 const AspectRow = ({aspect, useWhiteText, ...props}) => {
-  let firstName = aspect.first === "House1" ? "Ascendant" : aspect.first;
-  let secondName = aspect.second;
+  let firstName = aspect.first === "Asc" ? "Ascendant" : aspect.first;
+  let secondName = aspect.second === "Asc" ? "Ascendant" : aspect.second;
   let aspectType = aspect.type_name;
   let orb = aspect.orb.toFixed(2);
 

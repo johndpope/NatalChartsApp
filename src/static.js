@@ -17,73 +17,73 @@ const HOUSE_DISPLAY_NAMES = {
 const HOUSES_WITH_INFO = {
   "House1": {
     "title": "House I",
-    "description": "What makes you you. What you like to wear. Who you want to be. The way you are, and the way you present to the world.",
+    "description": "Your sense of self.",
     "ruling_planet": "Mars",
     "ruling_sign": "Aries"
   },
   "House2": {
     "title": "House II",
-    "description": "Overall wealth, income, and security.",
+    "description": "Security, possessions, and supporting yourself financially.",
     "ruling_planet": "Venus",
     "ruling_sign": "Taurus"
   },
   "House3": {
     "title": "House III",
-    "description": "Your intellect, your communication skills, your problem solving skills.",
+    "description": "Communication, early education, short journeys, and siblings.",
     "ruling_planet": "Mercury",
     "ruling_sign": "Gemini"
   },
   "House4": {
     "title": "House IV",
-    "description": "Your home and family life.",
+    "description": "Home, family, upbringing, and roots.",
     "ruling_planet": "Cancer",
     "ruling_sign": "Moon"
   },
   "House5": {
     "title": "House V",
-    "description": "Your love life. Sources of romance, fun, pleasure, leisure.",
+    "description": "Pleasure, romance, children, play, and performance.",
     "ruling_planet": "Sun",
     "ruling_sign": "Leo"
   },
   "House6": {
     "title": "House VI",
-    "description": "Your daily routine, how you perform the step by step actions of work. Health and fitness.",
+    "description": "Tasks, routine, service, and health.",
     "ruling_planet": "Mercury",
     "ruling_sign": "Virgo"
   },
   "House7": {
     "title": "House VII",
-    "description": "Serious arrangements and partnerships. Marriage, dating, or closing a new deal at work. How you handle them after the partnership has been signed off. ",
+    "description": "Lasting partnerships and matters of the heart.",
     "ruling_planet": "Venus",
     "ruling_sign": "Libra"
   },
   "House8": {
     "title": "House VIII",
-    "description": "Transformational power. Rebirth. Regeneration. ",
+    "description": "The money of others, sex, death, and healing.",
     "ruling_planet": "Mars",
     "ruling_sign": "Scorpio"
   },
   "House9": {
     "title": "House IX",
-    "description": "Moral center. Source of widest dreams, and how you approach difficult things like ethics.",
+    "description": "Understanding, philosophy, synthesis, and long journeys.",
     "ruling_planet": "Jupiter",
     "ruling_sign": "Sagittarius"
   },
   "House10": {
     "title": "House X",
-    "description": "Fame, rank, honors, all ways to climb the ladder of success.",
+    "description": "Achievements, social foundations, duty, and public life.",
     "ruling_planet": "Saturn",
     "ruling_sign": "Capricorn"
   },
   "House11": {
     "title": "House XI",
-    "description": "Source of all friendships, intimiate to biggest circles of friends.",
+    "description": "Community, friends, liberty, and legislation.",
     "ruling_planet": "Uranus",
     "ruling_sign": "Aquarius"
   },
   "House12": {
     "title": "House XII",
-    "description": "Your subconscious, instinct, secrets, the things that drive you without you even recognizing it. Source of self love, and self-undoing.",
+    "description": "The subconscious, spirituality, secrets, self-sacrifice, and endings.",
     "ruling_planet": "Neptune",
     "ruling_sign": "Pisces"
   }
@@ -215,54 +215,54 @@ const SIGNS_WITH_INFO = {
 const PLANETS_WITH_INFO = {
   "Sun": {
     "icon": "https://cdn.glitch.com/e4e4a6b3-d941-4ce7-83d9-950d6528f824%2Fic_sun.svg?1495986813996",
-    "title": "your base personality",
-    "description": "The chisel that lays the rough outline of your character."
+    "title": "Conscious Mind",
+    "description": "The Sun governs the shape of your life."
   }, 
   "Moon": {
     "icon": "https://cdn.glitch.com/e4e4a6b3-d941-4ce7-83d9-950d6528f824%2Fic_moon.svg?1495986815349",
-    "title": "your emotional center",
-    "description": "The source of your deepest emotions. Controls all things internal, from your guiding inner voice to the layout of your home."
+    "title": "Unconscious Mind",
+    "description": "The Moon rules your instincts and emotions."
   },
   "Ascendant": {
-    "title": "the mask you wear",
-    "description": "Who you want to be, how you approach things, the personality you deault to when threatened or uncomfortable."
+    "title": "Body & Ego",
+    "description": "Your Ascendant determines how you appear to others and your first reactions."
   },
   "Mercury": {
     "icon": "https://cdn.glitch.com/e4e4a6b3-d941-4ce7-83d9-950d6528f824%2Fic_mercury.svg?1495986815195",
-    "title": "communications Center",
-    "description": "Source of the hyper-rational side of your brain. In charge of how you communicate, via all sources. Everything from how you externalize an idea you've been thinking about for months, to how you prefer to text."
+    "title": "Mind & Expression",
+    "description": "Mercury controls the way you communicate and investigate."
   }, 
   "Venus": {
     "icon": "https://cdn.glitch.com/e4e4a6b3-d941-4ce7-83d9-950d6528f824%2Fic_venus.svg?1495986814230",
-    "title": "your heart and love life",
-    "description": "What you like, who you like, and what you like to like with them."
+    "title": "Love & Pleasure",
+    "description": "Venus indicates how you approach relationships and the tactile world."
   }, 
   "Mars": {
     "icon": "https://cdn.glitch.com/e4e4a6b3-d941-4ce7-83d9-950d6528f824%2Fic_mars.svg?1495986815095",
-    "title": "war and ambition",
-    "description": "Your drive, at everything from getting out of bed in the morning to war. How you deal with competition, and how you plan to outlast it"
+    "title": "Action & Desire",
+    "description": "Mars shows how you initiate and compete, plus your sexual and aggressive natures."
   }, 
   "Jupiter": {
     "icon": "https://cdn.glitch.com/e4e4a6b3-d941-4ce7-83d9-950d6528f824%2Fic_jupiter.svg?1495986814784",
-    "title": "wealth and opportunity",
-    "description": "How you make money, how you find stability. Your source of confidence and faith. Source of reflection and connecting of the dots."
+    "title": "Bounty & Fortune",
+    "description": "Jupiter governs your instinct for generosity and morality."
   },
   "Saturn": {
     "icon": "https://cdn.glitch.com/e4e4a6b3-d941-4ce7-83d9-950d6528f824%2Fic_saturn.svg?1495986813967",
-    "title": "wule and routine",
-    "description": "Your source of willpower, how you tackle the menial, how you handle the rules and what you're supposed to do."
+    "title": "Structure & Responsibility",
+    "description": "Saturn indicates how your generation handles limitations, control, and the paternal instinct."
   },
   "Uranus": {
-    "title": "surprise and excitement",
-    "description": "How do you break the mold?"
+    "title": "Discovery & Surprise",
+    "description": "Uranus rules your generation's proclivity for both breakthroughs and chaos, particularly in relation to tech."
   },
   "Neptune": {
-    "title": "hopes and dreams",
-    "description": "Your source of inspiration, where your wildest dreams come from. Artistic center."
+    "title": "Intuition & Illusion",
+    "description": "Neptune shows how your generation handles enlightenment, art, and compassion, as well as addiction and deception."
   },
   "Pluto": {
-    "title": "center of transformation",
-    "description": "How do you handle coming of age? Your step-style throughout life, source of all change (and obsessions)."
+    "title": "Power & Change",
+    "description": "Pluto governs your generation's approach to exploration and control."
   }
 };
 
