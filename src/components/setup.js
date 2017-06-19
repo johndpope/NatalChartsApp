@@ -208,7 +208,9 @@ export default class SetupView extends Component {
   }
   
   onNewBirthdate(date) {
-    this.setState({birth_date: date.hour(0).minute(0).second(0)});
+    let momentDate = moment(date, 'MM/DD/YYYY');
+
+    this.setState({birth_date: momentDate.hour(0).minute(0).second(0).format('MM/DD/YYYY')});
   }
   
   onNewBirthTime(date) {

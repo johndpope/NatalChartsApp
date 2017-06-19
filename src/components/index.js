@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
+import createHistory from 'history/createMemoryHistory';
+import { Router, Route, Switch, Link } from 'react-router-native';
+
 import SetupView from './setup';
 import ListingView from './listing';
-import createHistory from 'history/createMemoryHistory'
+import PlanetView from './library/planet';
+import SignView from './library/sign';
 
 import {
   AsyncStorage,
@@ -13,8 +17,6 @@ import {
   View,
   Alert
 } from 'react-native';
-
-import { Router, Route, Switch, Link } from 'react-router-native'
 
 const styles = StyleSheet.create({
   container: {
@@ -70,6 +72,8 @@ export default class IndexView extends Component {
             ( <ListingView chart={this.state.chart} person={this.state.person} /> )} />
           <Route exact path="/setup" history={this.history} render={(props) =>
             ( <SetupView onComplete={this.checkForUser} {...props} /> )} />
+          <Route path="/planet/:name" component={PlanetView} history={this.history} />
+          <Route path="/sign/:name" component={SignView} history={this.history} />
           <Route path="/" render={(props) => ( <View {...props} /> )} />
         </Switch>
       </Router>

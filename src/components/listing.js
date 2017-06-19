@@ -122,17 +122,29 @@ const TopRow = ({children, useWhiteText,  ...props}) => (
   <Text style={[styles.textRowBottomOnly, useWhiteText ? styles.textWhite : styles.textBlack]}>{children}</Text>
 );
 
-const PageHeader = ({name, planet, sign, signName, backgroundColor, ...props}) => {
+const PageHeader = ({planetName, planet, sign, signName, backgroundColor, ...props}) => {
   let whiteText = isReadable(backgroundColor, '#FFF') ? true : false;
 
   return (
     <View style={styles.center}>
-      <Title useWhiteText={whiteText}>{name}</Title>
+      <Link to={`/planet/${planetName}`}>
+        <View>
+        <Title useWhiteText={whiteText}>{planetName}</Title>
+        </View>
+      </Link>
       {planet.icon &&
-        <SvgImage styles={[styles.icon, styles.textWhite]} width="80" height="80" source={{uri: planet.icon}} />
+        <Link to={`/planet/${planetName}`}>
+          <View>
+            <SvgImage styles={styles.textWhite} width="80" height="80" source={{uri: planet.icon}} />
+          </View>
+        </Link>
       }
-      <Row useWhiteText={whiteText}>{signName}</Row>
-      <SvgImage style={styles.row} width="60" height="60" source={{uri: sign.icon}} />
+      <Link to={`/sign/${signName}`}>
+        <View><Row useWhiteText={whiteText}>{signName}</Row></View>
+      </Link>
+      <Link to={`/sign/${signName}`}>
+        <View><SvgImage style={styles.row} width="60" height="60" source={{uri: sign.icon}} /></View>
+      </Link>
     </View>
   )
 };
@@ -143,11 +155,6 @@ const SignInfo = ({signName, sign, planetName, planet, backgroundColor, ...props
   return (
     <View style={styles.mainSection}>
       <Row useWhiteText={whiteText}>{planetName}, {planet.title}, in {signName}, {sign.title}.</Row>
-      <View>
-        <ShortRow useWhiteText={whiteText}>Element: {sign.element}</ShortRow>
-        <ShortRow useWhiteText={whiteText}>Quality: {sign.quality}</ShortRow>
-        <ShortRow useWhiteText={whiteText}>Ruler: {sign.ruler}</ShortRow>
-      </View>
       <Row useWhiteText={whiteText}>{planet.description} A few lines about {planetName} in {signName} should go here. Personality traits, ways to spot one in the wild, some advice, maybe?</Row>
     </View>
   )
@@ -224,7 +231,7 @@ export default class ListingView extends Component {
     return (
       <ScrollView key={page.name}>
         <View style={styles.page}>
-          <PageHeader name={page.name} planet={planetInfo} sign={sign} signName={planet.sign} backgroundColor={backgroundColor} />
+          <PageHeader planetName={page.name} planet={planetInfo} sign={sign} signName={planet.sign} backgroundColor={backgroundColor} />
           <SignInfo planetName={page.name} planet={planetInfo} signName={planet.sign} sign={sign} backgroundColor={backgroundColor} />
           <HouseInfo name={page.name} house={houseInfo} backgroundColor={backgroundColor} />
           <AspectInfo aspects={page.val.aspects} backgroundColor={backgroundColor} />
