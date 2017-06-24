@@ -5,7 +5,7 @@ import {
   Dimensions,
   StyleSheet,
   Text,
-  TouchableHighlight,
+  TouchableOpacity,
   View
 } from 'react-native';
 
@@ -18,7 +18,8 @@ const styles = StyleSheet.create({
     height: window.height,
     backgroundColor: '#F0C8CA',
     padding: 20,
-    paddingTop: 30
+    paddingTop: 30,
+    alignItems: 'flex-start'
   },
   menuItem: {
     marginBottom: 20
@@ -34,29 +35,28 @@ const styles = StyleSheet.create({
 });
 
 const MenuItem = ({text, onPress, ...props}) => (
-  <TouchableHighlight
+  <TouchableOpacity
     onPress={onPress}
-    style={styles.menuItem}
-    underlayColor='#f0f4f7'>
+    style={styles.menuItem}>
       <Text style={styles.itemText}>{text}</Text>
-  </TouchableHighlight>
+  </TouchableOpacity>
 );
 
 // like MenuItem but with a wrapper to float it
 // to the bottom and no bottom margin on the row
 const LogoutItem = ({text, onPress, ...props}) => (
   <View style={styles.logoutItemWrapper}>
-    <TouchableHighlight
-      onPress={onPress}
-      underlayColor='#f0f4f7'>
+    <TouchableOpacity
+      onPress={onPress}>
         <Text style={styles.itemText}>{text}</Text>
-      </TouchableHighlight>
+      </TouchableOpacity>
   </View>
 );
 
 export default class Menu extends Component {
   static propTypes = {
     onItemSelected: React.PropTypes.func.isRequired,
+    isOpen: React.PropTypes.bool.isRequired
   };
 
   constructor(props) {
@@ -74,13 +74,13 @@ export default class Menu extends Component {
     // for a bit...
     setTimeout(() => {
       this.setState({ready: true})
-    }, 200);
+    }, 1500);
   }
 
   render() {
     let onSelected = this.props.onItemSelected;
     
-    if (!this.state.ready)
+    if (!this.state.ready || !this.props.isOpen)
       return <View />
 
     return (

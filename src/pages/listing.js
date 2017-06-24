@@ -11,7 +11,6 @@ import {
   FlatList,
   Text,
   TextInput,
-  TouchableHighlight,
   ScrollView,
   Platform,
   View
@@ -19,7 +18,7 @@ import {
 
 import { Link } from 'react-router-native';
 
-import { SvgImage } from '../components/';
+import { Header, SvgImage } from '../components/';
 import { PLANET_SORT_ORDER, SIGNS_WITH_INFO, PLANETS_WITH_INFO, HOUSES_WITH_INFO } from '../static';
 
 const styles = StyleSheet.create({
@@ -203,6 +202,12 @@ const isReadable = (backgroundColor, textColor) => {
 }
 
 export default class ListingView extends Component {
+  static propTypes = {
+    showSidebar: React.PropTypes.func.isRequired,
+    chart: React.PropTypes.object.isRequired,
+    person: React.PropTypes.object.isRequired,
+  };
+
   constructor(props) {
     super(props);
 
@@ -218,6 +223,7 @@ export default class ListingView extends Component {
     }
     
     this.onNewPage = this.onNewPage.bind(this);
+    this.showSidebar = this.showSidebar.bind(this);
   }
 
   renderPage(page) {
@@ -248,6 +254,10 @@ export default class ListingView extends Component {
     this.setState({index: state.index});
   }
 
+  showSidebar() {
+    this.props.showSidebar();
+  }
+
   render() {
     let person = this.props.person;
     let birthtime = moment.unix(person.birthdate).utc().format("dddd, MMMM Do YYYY, h:mm a");
@@ -259,15 +269,7 @@ export default class ListingView extends Component {
 
     return (
       <LinearGradient colors={colors} style={styles.container}>
-        <View style={styles.header}>
-          <Link
-            to={`/setup`}
-            style={styles.setupButton}
-            underlayColor='#f0f4f7'>
-              <Text>Log out</Text>
-          </Link>
-          <Text style={[styles.headerText, useWhiteText ? styles.textWhite : styles.textBlack]}>{birthtime}</Text>
-        </View>
+        <Header leftText='☰ Menu' onBackPress={this.showSidebar} />
         {this.state.pages && 
           <Swiper showsButtons onMomentumScrollEnd={this.onNewPage}>
             {pages}

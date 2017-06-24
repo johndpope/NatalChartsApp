@@ -4,7 +4,7 @@ import { Router, Route, Switch, Link } from 'react-router-native';
 import {
   StyleSheet,
   Text,
-  TouchableHighlight,
+  TouchableOpacity,
   Platform,
   View
 } from 'react-native';
@@ -14,7 +14,8 @@ const styles = StyleSheet.create({
     height: 60,
     paddingTop: (Platform.OS === 'ios') ? 10 : 0,
     paddingLeft: 10,
-    backgroundColor: 'rgba(0, 0, 0, 0)'
+    backgroundColor: 'rgba(0, 0, 0, 0)',
+    alignItems: 'flex-start'
   },
   backButton: {
     marginTop: 10
@@ -34,17 +35,16 @@ export default class Header extends Component {
   }
 
   render() {
-    let backText = this.props.backText ? this.props.backText : "‹ Back";
+    let leftText = this.props.leftText ? this.props.leftText : "‹ Back";
     let titleText = this.props.titleText;
 
     return (
       <View style={styles.header}>
-        <TouchableHighlight
+        <TouchableOpacity
           style={styles.backButton}
-          onPress={this.props.onBackPress}
-          underlayColor='#f0f4f7'>
-            <Text style={styles.backButtonText}>{backText}</Text>
-        </TouchableHighlight>
+          onPress={this.props.onBackPress}>
+            <Text style={styles.backButtonText}>{leftText}</Text>
+        </TouchableOpacity>
         {titleText &&
           <Text style={styles.titleText}>{titleText}</Text>
         }

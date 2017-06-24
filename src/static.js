@@ -148,7 +148,7 @@ const SIGNS_WITH_INFO = {
     "ruler": "Mercury",
     "dates": "8/22 - 9/22",
     "startColor": "#58A054",
-    "endColor": "#FD500B"
+    "endColor": "##127A7D"
   },
   "Libra" : {
     "icon": "https://cdn.glitch.com/e4e4a6b3-d941-4ce7-83d9-950d6528f824%2Fic_libra.svg",
