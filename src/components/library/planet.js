@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import SvgImage from '../SvgImage';
+import Header from '../header';
 
 import { PLANET_SORT_ORDER, SIGNS_WITH_INFO, PLANETS_WITH_INFO, HOUSES_WITH_INFO } from '../../static';
 import { Link } from 'react-router-native'
@@ -8,7 +9,7 @@ import {
   StyleSheet,
   Text,
   TouchableHighlight,
-  Linking,
+  BackHandler,
   ScrollView,
   Platform,
   View
@@ -19,37 +20,25 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: (Platform.OS === 'ios') ? 10 : 0
   },
-  header: {
-    height: 60,
-    paddingTop: (Platform.OS === 'ios') ? 10 : 0,
-    paddingLeft: 10,
-    backgroundColor: 'rgba(0, 0, 0, 0)'
-  },
   page: {
     flex: 1,
     marginTop: 5,
     marginLeft: 20,
     marginRight: 20,
-    paddingBottom: 5,
+    marginBottom: 5,
     alignItems: 'center'
   },
   title: {
-    fontFamily: 'TenorSans',
+    fontFamily: 'Karla-Regular',
     fontSize: 22,
     marginBottom: 10
   },
   text: {
-    fontFamily: 'TenorSans',
+    fontFamily: 'Karla-Regular',
     fontSize: 16
   },
   icon: {
     marginBottom: 10
-  },
-  backButton: {
-    marginTop: 10
-  },
-  backButtonText: {
-    fontSize: 14
   }
 });
 
@@ -66,10 +55,13 @@ export default class PlanetView extends Component {
     };
 
     this.onBackPress = this.onBackPress.bind(this);
+
+    BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
   }
 
   onBackPress() {
     this.props.history.goBack();
+    return true;
   }
 
   render() {
@@ -79,14 +71,7 @@ export default class PlanetView extends Component {
 
     return (
       <View style={styles.container}>
-        <View style={styles.header}>
-          <TouchableHighlight
-            style={styles.backButton}
-            onPress={this.onBackPress}
-            underlayColor='#f0f4f7'>
-              <Text style={styles.backButtonText}>&lsaquo; Back</Text>
-          </TouchableHighlight>
-        </View>
+        <Header onBackPress={this.onBackPress} />
         <View style={styles.page}>
           <Text style={styles.title}>{`${name}, ${planet.title}`}</Text>
           {planet.icon &&

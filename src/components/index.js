@@ -68,13 +68,13 @@ export default class IndexView extends Component {
     return (
       <Router history={this.history} getUserConfirmation={this.getUserConfirmation}>
         <Switch style={styles.container}>
-          <Route exact path="/chart" render={(props) => 
+          <Route exact path="/chart" history={this.history} render={() => 
             ( <ListingView chart={this.state.chart} person={this.state.person} /> )} />
-          <Route exact path="/setup" history={this.history} render={(props) =>
-            ( <SetupView onComplete={this.checkForUser} {...props} /> )} />
+          <Route exact path="/setup" history={this.history} render={() =>
+            ( <SetupView onComplete={this.checkForUser} /> )} />
           <Route path="/planet/:name" component={PlanetView} history={this.history} />
           <Route path="/sign/:name" component={SignView} history={this.history} />
-          <Route path="/" render={(props) => ( <View {...props} /> )} />
+          <Route path="/" render={() => ( <View /> )} />
         </Switch>
       </Router>
     )

@@ -13,7 +13,6 @@ import {
   Text,
   TextInput,
   TouchableHighlight,
-  Linking,
   ScrollView,
   Platform,
   View
@@ -129,7 +128,7 @@ const PageHeader = ({planetName, planet, sign, signName, backgroundColor, ...pro
     <View style={styles.center}>
       <Link to={`/planet/${planetName}`}>
         <View>
-        <Title useWhiteText={whiteText}>{planetName}</Title>
+          <Title useWhiteText={whiteText}>{planetName}</Title>
         </View>
       </Link>
       {planet.icon &&
