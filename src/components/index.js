@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import createHistory from 'history/createMemoryHistory';
 import { Router, Route, Switch, Link } from 'react-router-native';
+import SideMenu from 'react-native-side-menu';
 
+import Menu from './menu';
 import SetupView from './setup';
 import ListingView from './listing';
 import PlanetView from './library/planet';
@@ -37,6 +39,7 @@ export default class IndexView extends Component {
 
     this.checkForUser = this.checkForUser.bind(this);
     this.getUserConfirmation = this.getUserConfirmation.bind(this);
+    this.onMenuItemSelected = this.onMenuItemSelected.bind(this);
   }
 
   componentWillMount() {
@@ -64,19 +67,27 @@ export default class IndexView extends Component {
     ])
   }
 
+  onMenuItemSelected(name) {
+    console.log(name);
+  }
+
   render() {
+    const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
+
     return (
-      <Router history={this.history} getUserConfirmation={this.getUserConfirmation}>
-        <Switch style={styles.container}>
-          <Route exact path="/chart" history={this.history} render={() => 
-            ( <ListingView chart={this.state.chart} person={this.state.person} /> )} />
-          <Route exact path="/setup" history={this.history} render={() =>
-            ( <SetupView onComplete={this.checkForUser} /> )} />
-          <Route path="/planet/:name" component={PlanetView} history={this.history} />
-          <Route path="/sign/:name" component={SignView} history={this.history} />
-          <Route path="/" render={() => ( <View /> )} />
-        </Switch>
-      </Router>
+      <SideMenu menu={menu}>
+        <Router history={this.history} getUserConfirmation={this.getUserConfirmation}>
+          <Switch style={styles.container}>
+            <Route exact path="/chart" history={this.history} render={() => 
+              ( <ListingView chart={this.state.chart} person={this.state.person} /> )} />
+            <Route exact path="/setup" history={this.history} render={() =>
+              ( <SetupView onComplete={this.checkForUser} /> )} />
+            <Route path="/planet/:name" component={PlanetView} history={this.history} />
+            <Route path="/sign/:name" component={SignView} history={this.history} />
+            <Route path="/" render={() => ( <View /> )} />
+          </Switch>
+        </Router>
+      </SideMenu>
     )
   }
 }

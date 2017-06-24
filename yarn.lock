@@ -3010,6 +3010,10 @@ react-native-modal-datetime-picker:
     moment "^2.15.0"
     react-native-animated-modal "^1.0.1"
 
+react-native-side-menu:
+  version "0.20.1"
+  resolved "https://registry.yarnpkg.com/react-native-side-menu/-/react-native-side-menu-0.20.1.tgz#df21b4bb9d8a1aa3bae53d74ddf8a739eb59bfc5"
+
 react-native-simple-store@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/react-native-simple-store/-/react-native-simple-store-1.1.0.tgz#69e91d6b91d362cd4ea12b0486df3eaf2f628b04"

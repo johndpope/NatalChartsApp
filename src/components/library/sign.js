@@ -18,7 +18,8 @@ import {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: (Platform.OS === 'ios') ? 10 : 0
+    paddingTop: (Platform.OS === 'ios') ? 10 : 0,
+    backgroundColor: '#EFEFEF'
   },
   page: {
     flex: 1,
@@ -74,7 +75,7 @@ export default class SignView extends Component {
       <View style={styles.container}>
         <Header onBackPress={this.onBackPress} />
         <View style={styles.page}>
-          <Text style={styles.title}>{`${name}, ${sign.title}`}</Text>
+          <Text style={styles.title}>{`${name} - ${sign.title}`}</Text>
           {sign.icon &&
             <SvgImage style={styles.icon} width="80" height="80" source={{uri: sign.icon}} />
           }
