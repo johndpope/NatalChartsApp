@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import SvgImage from '../SvgImage';
-import Header from '../header';
 
+import { Header, SvgImage } from '../../components/';
 import { PLANET_SORT_ORDER, SIGNS_WITH_INFO, PLANETS_WITH_INFO, HOUSES_WITH_INFO } from '../../static';
-import { Link } from 'react-router-native'
+
+import { Link } from 'react-router-native';
 
 import {
   StyleSheet,
