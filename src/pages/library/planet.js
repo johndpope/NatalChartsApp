@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import SvgImage from '../SvgImage';
-import Header from '../header';
 
+import { Header, SvgImage } from '../../components/';
 import { PLANET_SORT_ORDER, SIGNS_WITH_INFO, PLANETS_WITH_INFO, HOUSES_WITH_INFO } from '../../static';
-import { Link } from 'react-router-native'
+
+import { Link } from 'react-router-native';
 
 import {
   StyleSheet,
@@ -42,48 +42,42 @@ const styles = StyleSheet.create({
   }
 });
 
-export default class SignView extends Component {
+export default class PlanetView extends Component {
   constructor(props) {
     super(props);
 
-    let signName = props.match.params.name;
-    let sign = SIGNS_WITH_INFO[signName];
+    let planetName = props.match.params.name;
+    let planet = PLANETS_WITH_INFO[planetName];
 
     this.state = {
-      signName: signName,
-      sign: sign
+      planetName: planetName,
+      planet: planet
     };
 
     this.onBackPress = this.onBackPress.bind(this);
-    this.history = this.props.history;
 
     BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
   }
 
   onBackPress() {
-    this.history.goBack();
+    this.props.history.goBack();
     return true;
   }
 
   render() {
-    let name = this.state.signName;
-    let sign = this.state.sign;
+    let name = this.state.planetName;
+    let planet = this.state.planet;
     let history = this.props.history;
 
     return (
       <View style={styles.container}>
         <Header onBackPress={this.onBackPress} />
         <View style={styles.page}>
-          <Text style={styles.title}>{`${name}, ${sign.title}`}</Text>
-          {sign.icon &&
-            <SvgImage style={styles.icon} width="80" height="80" source={{uri: sign.icon}} />
+          <Text style={styles.title}>{`${name}, ${planet.title}`}</Text>
+          {planet.icon &&
+            <SvgImage style={styles.icon} width="80" height="80" source={{uri: planet.icon}} />
           }
-          <Text style={styles.text}>{sign.description}</Text>
-          <View>
-            <Text style={styles.text}>Element: {sign.element}</Text>
-            <Text style={styles.text}>Quality: {sign.quality}</Text>
-            <Text style={styles.text}>Ruler: {sign.ruler}</Text>
-          </View>
+          <Text style={styles.text}>{planet.description}</Text>
         </View>
       </View>
     )

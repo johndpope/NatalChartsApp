@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import Swiper from 'react-native-swiper';
 import LinearGradient from 'react-native-linear-gradient';
-import SvgImage from './SvgImage';
 import Chroma from 'chroma-js';
 
 import {
@@ -18,9 +17,10 @@ import {
   View
 } from 'react-native';
 
-import { PLANET_SORT_ORDER, SIGNS_WITH_INFO, PLANETS_WITH_INFO, HOUSES_WITH_INFO } from '../static';
+import { Link } from 'react-router-native';
 
-import { Link } from 'react-router-native'
+import { SvgImage } from '../components/';
+import { PLANET_SORT_ORDER, SIGNS_WITH_INFO, PLANETS_WITH_INFO, HOUSES_WITH_INFO } from '../static';
 
 const styles = StyleSheet.create({
   container: {
