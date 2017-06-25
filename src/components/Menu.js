@@ -55,7 +55,8 @@ const LogoutItem = ({text, onPress, ...props}) => (
 
 export default class Menu extends Component {
   static propTypes = {
-    onItemSelected: React.PropTypes.func.isRequired
+    onItemSelected: React.PropTypes.func.isRequired,
+    isClosed: React.PropTypes.bool.isRequired
   };
 
   constructor(props) {
@@ -79,7 +80,7 @@ export default class Menu extends Component {
   render() {
     let onSelected = this.props.onItemSelected;
     
-    if (!this.state.ready)
+    if (!this.state.ready || this.props.isClosed)
       return <View />
 
     return (

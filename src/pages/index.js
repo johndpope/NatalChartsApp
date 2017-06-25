@@ -33,7 +33,8 @@ export default class IndexView extends Component {
     super(props);
 
     this.state = {
-      logged_in: false
+      logged_in: false,
+      menu_open: false
     };
 
     this.history = createHistory({
@@ -43,6 +44,8 @@ export default class IndexView extends Component {
     this.checkForUser = this.checkForUser.bind(this);
     this.getUserConfirmation = this.getUserConfirmation.bind(this);
     this.onMenuItemSelected = this.onMenuItemSelected.bind(this);
+    this.onDrawerOpenStart = this.onDrawerOpenStart.bind(this);
+    this.onDrawerClose = this.onDrawerClose.bind(this);
     this.goToSetup = this.goToSetup.bind(this);
     this.showMenu = this.showMenu.bind(this);
   }
@@ -93,12 +96,22 @@ export default class IndexView extends Component {
     }
   }
 
+  onDrawerOpenStart() {
+    if (!this.state.menu_open)
+      this.setState({menu_open: true});
+  }
+
+  onDrawerClose() {
+    if (this.state.menu_open)
+      this.setState({menu_open: false});
+  }
+
   showMenu() {
     this._drawer.open();
   }
 
   render() {
-    const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
+    const menu = <Menu onItemSelected={this.onMenuItemSelected} isClosed={!this.state.menu_open} />;
     const disableMenu = this.state.person == null;
 
     return (
@@ -109,6 +122,8 @@ export default class IndexView extends Component {
         openDrawerOffset={0.4}
         tapToClose={true}
         tweenHandler={Drawer.tweenPresets.parallax}
+        onOpenStart={this.onDrawerOpenStart}
+        onClose={this.onDrawerClose}
         ref={(c) => this._drawer = c}>
         <Router history={this.history} getUserConfirmation={this.getUserConfirmation}>
           <Switch style={styles.container}>

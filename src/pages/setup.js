@@ -190,7 +190,7 @@ export default class SetupView extends Component {
     new Api().chart(this.state.name, birth_date, birth_time, this.state.parsed_birth_city)
       .then((json) => {
         AsyncStorage.setItem('@NatalCharts:loggedInUser', JSON.stringify(json))
-          .then(this.onComplete)
+          .then(this.props.onComplete)
           .catch((error) => {
             this.setState({is_processing: false});
             console.error(error);
