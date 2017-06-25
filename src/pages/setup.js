@@ -130,6 +130,10 @@ const SetupButton = ({text, onPress, disabled, ...props}) => (
 );
 
 export default class SetupView extends Component {
+  static propTypes = {
+    onComplete: React.PropTypes.func.isRequired
+  };
+
   constructor(props) {
     super(props);
 
@@ -147,10 +151,6 @@ export default class SetupView extends Component {
     
     this.onNewBirthdate = this.onNewBirthdate.bind(this);
     this.onNewBirthTime = this.onNewBirthTime.bind(this);
-
-    if (this.props.onComplete) {
-      this.onComplete = props.onComplete.bind(this);
-    }
   };
 
   onSubmitClick() {
@@ -189,13 +189,8 @@ export default class SetupView extends Component {
 
     new Api().chart(this.state.name, birth_date, birth_time, this.state.parsed_birth_city)
       .then((json) => {
-        this.setState({is_processing: false});
         AsyncStorage.setItem('@NatalCharts:loggedInUser', JSON.stringify(json))
-          .then(() => {
-            console.log("done");
-            if (this.onComplete)
-              this.onComplete();
-          })
+          .then(this.onComplete)
           .catch((error) => {
             this.setState({is_processing: false});
             console.error(error);
