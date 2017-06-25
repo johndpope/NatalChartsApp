@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import createHistory from 'history/createMemoryHistory';
 import { Router, Route, Switch, Link } from 'react-router-native';
 
-import SideMenu from 'react-native-side-menu';
+import Drawer from 'react-native-drawer';
 import { Menu } from '../components';
 
 import SetupView from './setup';
@@ -33,8 +33,7 @@ export default class IndexView extends Component {
     super(props);
 
     this.state = {
-      logged_in: false,
-      menu_open: false
+      logged_in: false
     };
 
     this.history = createHistory({
@@ -44,7 +43,6 @@ export default class IndexView extends Component {
     this.checkForUser = this.checkForUser.bind(this);
     this.getUserConfirmation = this.getUserConfirmation.bind(this);
     this.onMenuItemSelected = this.onMenuItemSelected.bind(this);
-    this.onMenuMove = this.onMenuMove.bind(this);
     this.goToSetup = this.goToSetup.bind(this);
     this.showMenu = this.showMenu.bind(this);
   }
@@ -80,40 +78,38 @@ export default class IndexView extends Component {
     ])
   }
 
-  onMenuMove(left) {
-    let should_be_open = left > 0;
-    if (this.state.menu_open != should_be_open) {
-      this.setState({ menu_open: should_be_open });
-    }
-  }
-
   onMenuItemSelected(name) {
     if (name === "Logout") {
       AsyncStorage.removeItem('@NatalCharts:loggedInUser')
         .then(() => {
           this.goToSetup();
-          this.setState({ logged_in: false, chart: null, person: null, menu_open: false });
+          this._drawer.close();
+          this.setState({ logged_in: false, chart: null, person: null });
         })
         .catch((error) => { console.log(error); });
     }
     else {
-      this.setState({menu_open: false});
+      this._drawer.close();
     }
   }
 
   showMenu() {
-    this.setState({menu_open: true});
+    this._drawer.open();
   }
 
   render() {
-    const menu = <Menu onItemSelected={this.onMenuItemSelected} isOpen={this.state.menu_open} />;
+    const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
     const disableMenu = this.state.person == null;
 
     return (
-      <SideMenu menu={menu}
-                disableGestures={disableMenu}
-                isOpen={this.state.menu_open}
-                onMove={this.onMenuMove}>
+      <Drawer
+        type="static"
+        content={menu}
+        disabled={disableMenu}
+        openDrawerOffset={0.4}
+        tapToClose={true}
+        tweenHandler={Drawer.tweenPresets.parallax}
+        ref={(c) => this._drawer = c}>
         <Router history={this.history} getUserConfirmation={this.getUserConfirmation}>
           <Switch style={styles.container}>
             <Route exact path="/chart" history={this.history} render={() =>
@@ -128,7 +124,7 @@ export default class IndexView extends Component {
             <Route path="/" render={() => ( <View /> )} />
           </Switch>
         </Router>
-      </SideMenu>
+      </Drawer>
     )
   }
 }

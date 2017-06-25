@@ -12,13 +12,14 @@ import {
   Text,
   TextInput,
   ScrollView,
+  TouchableOpacity,
   Platform,
   View
 } from 'react-native';
 
 import { Link } from 'react-router-native';
 
-import { Header, SvgImage } from '../components/';
+import { Header, PlanetNav, SvgImage } from '../components/';
 import { PLANET_SORT_ORDER, SIGNS_WITH_INFO, PLANETS_WITH_INFO, HOUSES_WITH_INFO } from '../static';
 
 const styles = StyleSheet.create({
@@ -223,7 +224,8 @@ export default class ListingView extends Component {
     }
     
     this.onNewPage = this.onNewPage.bind(this);
-    this.showSidebar = this.showSidebar.bind(this);
+    this.onNavLeft = this.onNavLeft.bind(this);
+    this.onNavRight = this.onNavRight.bind(this);
   }
 
   renderPage(page) {
@@ -254,12 +256,16 @@ export default class ListingView extends Component {
     this.setState({index: state.index});
   }
 
-  showSidebar() {
-    this.props.showSidebar();
+  onNavLeft() {
+    this._swiper.scrollBy(-1);
+  }
+
+  onNavRight() {
+    this._swiper.scrollBy(1);
   }
 
   render() {
-    let person = this.props.person;
+    const person = this.props.person;
     let birthtime = moment.unix(person.birthdate).utc().format("dddd, MMMM Do YYYY, h:mm a");
 
     let pages = this.state.pages.map((page, key) => this.renderPage(page));
@@ -269,9 +275,11 @@ export default class ListingView extends Component {
 
     return (
       <LinearGradient colors={colors} style={styles.container}>
-        <Header leftText='☰ Menu' onBackPress={this.showSidebar} />
+        <Header leftText='☰ Menu' onBackPress={this.props.showSidebar} />
         {this.state.pages && 
-          <Swiper showsButtons onMomentumScrollEnd={this.onNewPage}>
+          <Swiper ref={c => this._swiper = c}
+            showsButtons
+            onMomentumScrollEnd={this.onNewPage}>
             {pages}
           </Swiper>
         }
