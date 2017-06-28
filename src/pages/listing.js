@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import Swiper from 'react-native-swiper';
 import LinearGradient from 'react-native-linear-gradient';
+import store from 'react-native-simple-store';
 import Chroma from 'chroma-js';
 
 import {
+  Alert,
   AsyncStorage,
   StyleSheet,
   Button,
@@ -204,28 +206,68 @@ const isReadable = (backgroundColor, textColor) => {
 
 export default class ListingView extends Component {
   static propTypes = {
-    showSidebar: React.PropTypes.func.isRequired,
-    chart: React.PropTypes.object.isRequired,
-    person: React.PropTypes.object.isRequired,
+    showSidebar: React.PropTypes.func,
+    chart: React.PropTypes.object,
+    person: React.PropTypes.object
   };
 
   constructor(props) {
     super(props);
 
-    var pages = [];
-    for (var i = 0; i < PLANET_SORT_ORDER.length; i++) {
-      let key = PLANET_SORT_ORDER[i];
-      pages.push({name: key, val: props.chart.planets[key]});
-    }
-
     this.state = {
-      pages: pages,
+      chart: props.chart,
+      person: props.person,
+      pages: [],
       index: 0
-    }
-    
+    };
+
+    this.generatePages = this.generatePages.bind(this);
+    this.loadChart = this.loadChart.bind(this);
+
     this.onNewPage = this.onNewPage.bind(this);
     this.onNavLeft = this.onNavLeft.bind(this);
     this.onNavRight = this.onNavRight.bind(this);
+    this.onBackPress = this.onBackPress.bind(this);
+    this.onEditChartPress = this.onEditChartPress.bind(this);
+  }
+
+  componentWillMount() {
+    if (this.props.match) {
+      this.loadChart(this.props.match.params.name);
+    } else {
+      this.generatePages();
+    }
+  }
+
+  generatePages() {
+    var pages = [];
+    for (var i = 0; i < PLANET_SORT_ORDER.length; i++) {
+      let key = PLANET_SORT_ORDER[i];
+      pages.push({name: key, val: this.state.chart.planets[key]});
+    }
+
+    this.setState({pages});
+  }
+
+  loadChart(name) {
+    var item = null;
+
+    store.get('savedCharts')
+      .then((res) => {
+        let item = null;
+        for(var i = 0; i < res.length; i++) {
+          if (res[i].person.name === name) {
+            item = res[i];
+            break;
+          }
+        }
+
+        if (item) {
+          this.setState({chart: item.chart, person: item.person});
+          this.generatePages();
+        }
+      })
+      .catch((error) => console.log(error));
   }
 
   renderPage(page) {
@@ -252,6 +294,18 @@ export default class ListingView extends Component {
     return [sign.startColor, sign.endColor];
   }
   
+  onBackPress() {
+    if (this.props.showSidebar) {
+      this.props.showSidebar();
+    } else {
+      this.props.history.goBack();
+    }
+  }
+
+  onEditChartPress() {
+    Alert.alert('#TODO: Edit chart');
+  }
+
   onNewPage(e, state, context) {
     this.setState({index: state.index});
   }
@@ -265,17 +319,28 @@ export default class ListingView extends Component {
   }
 
   render() {
-    const person = this.props.person;
-    let birthtime = moment.unix(person.birthdate).utc().format("dddd, MMMM Do YYYY, h:mm a");
+    if (this.state.pages.length === 0) {
+      return (<View />)
+    }
+
+    const person = this.state.person;
+    let birthtime = moment.unix(person.birthdate).utc().format("MMMM Do YYYY, h:mm a");
 
     let pages = this.state.pages.map((page, key) => this.renderPage(page));
     let colorValues = this.state.pages.map((page, key) => this.getColorsForPage(page));
     let colors = colorValues[this.state.index];
     let useWhiteText = isReadable(colors[0], '#FFF');
 
+    let leftText = this.props.match == null ? '☰ Menu' : null;
+    let rightText = this.props.match == null ? null : 'Edit';
+
     return (
       <LinearGradient colors={colors} style={styles.container}>
-        <Header leftText='☰ Menu' onBackPress={this.props.showSidebar} />
+        <Header
+          leftText={leftText}
+          onBackPress={this.onBackPress}
+          rightText={rightText}
+          onRightPress={this.onEditChartPress} />
         {this.state.pages && 
           <Swiper ref={c => this._swiper = c}
             showsButtons

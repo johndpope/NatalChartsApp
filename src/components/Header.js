@@ -11,14 +11,16 @@ import {
 
 const styles = StyleSheet.create({
   header: {
+    flexDirection: 'row',
     paddingTop: (Platform.OS === 'ios') ? 10 : 0,
     backgroundColor: 'rgba(0, 0, 0, 0)',
-    alignItems: 'flex-start'
+    alignItems: 'center',
+    justifyContent: 'space-between'
   },
-  leftButton: {
+  button: {
     padding: 10
   },
-  leftButtonText: {
+  buttonText: {
     fontSize: 14
   },
   titleText: {
@@ -34,17 +36,25 @@ export default class Header extends Component {
 
   render() {
     let leftText = this.props.leftText ? this.props.leftText : "‹ Back";
+    let rightText = this.props.rightText;
     let titleText = this.props.titleText;
 
     return (
       <View style={styles.header}>
         <TouchableOpacity
-          style={styles.leftButton}
+          style={styles.button}
           onPress={this.props.onBackPress}>
-            <Text style={styles.leftButtonText}>{leftText}</Text>
+            <Text style={styles.buttonText}>{leftText}</Text>
         </TouchableOpacity>
         {titleText &&
           <Text style={styles.titleText}>{titleText}</Text>
+        }
+        {rightText &&
+          <TouchableOpacity
+            style={styles.button}
+            onPress={this.props.onRightPress}>
+              <Text style={styles.buttonText}>{rightText}</Text>
+          </TouchableOpacity>
         }
       </View>
     )

@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import createHistory from 'history/createMemoryHistory';
 import { Router, Route, Switch, Link } from 'react-router-native';
+import store from 'react-native-simple-store';
 
 import Drawer from 'react-native-drawer';
 import { Menu } from '../components';
 
 import SetupView from './setup';
+import NewChartView from './new-chart';
+import SavedCharts from './saved-charts';
+
 import ListingView from './listing';
 import PlanetView from './library/planet';
 import SignView from './library/sign';
@@ -44,6 +48,7 @@ export default class IndexView extends Component {
     this.checkForUser = this.checkForUser.bind(this);
     this.getUserConfirmation = this.getUserConfirmation.bind(this);
     this.onMenuItemSelected = this.onMenuItemSelected.bind(this);
+    this.onNewChartAdded = this.onNewChartAdded.bind(this);
     this.onDrawerOpenStart = this.onDrawerOpenStart.bind(this);
     this.onDrawerClose = this.onDrawerClose.bind(this);
     this.goToSetup = this.goToSetup.bind(this);
@@ -74,6 +79,10 @@ export default class IndexView extends Component {
       .catch((error) => { console.log(error); });
   }
 
+  onNewChartAdded(key) {
+    this.history.replace('/chart/' + key);
+  }
+
   getUserConfirmation(message, callback) {
     Alert.alert('Confirm', message, [
       { text: 'Cancel', onPress: () => callback(false) },
@@ -90,6 +99,10 @@ export default class IndexView extends Component {
           this.setState({ logged_in: false, chart: null, person: null });
         })
         .catch((error) => { console.log(error); });
+    }
+    else if (name === "Saved") {
+      this.history.push('/saved');
+      this._drawer.close();
     }
     else {
       this._drawer.close();
@@ -132,10 +145,18 @@ export default class IndexView extends Component {
                   chart={this.state.chart}
                   person={this.state.person}
                   showSidebar={this.showMenu} /> )} />
+            <Route path ="/chart/:name" component={ListingView} history={this.history} />
+
             <Route exact path="/setup" history={this.history} render={() =>
               ( <SetupView onComplete={this.checkForUser} /> )} />
+
+            <Route exact path="/add" history={this.history} render={(props) =>
+              ( <NewChartView onComplete={this.onNewChartAdded} {...props} /> )} />
+            <Route exact path="/saved" component={SavedCharts} history={this.history} />
+
             <Route path="/planet/:name" component={PlanetView} history={this.history} />
             <Route path="/sign/:name" component={SignView} history={this.history} />
+
             <Route path="/" render={() => ( <View /> )} />
           </Switch>
         </Router>

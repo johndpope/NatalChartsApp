@@ -86,7 +86,6 @@ export default class Menu extends Component {
     return (
       <View style={styles.menu}>
         <MenuItem text={'Your Chart'} onPress={() => onSelected('You')} />
-        <MenuItem text={'Best Friend #1'} onPress={() => onSelected('Saved')} />
         <MenuItem text={'Saved Charts'} onPress={() => onSelected('Saved')} />
 
         <LogoutItem text={'Log out'} onPress={() => onSelected('Logout')} />
