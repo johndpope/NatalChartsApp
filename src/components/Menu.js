@@ -74,13 +74,16 @@ export default class Menu extends Component {
     // for a bit...
     setTimeout(() => {
       this.setState({ready: true})
-    }, 1500);
+    }, 100);
   }
 
   render() {
     let onSelected = this.props.onItemSelected;
     
-    if (!this.state.ready || this.props.isClosed)
+    // looks like with react-native-drawer the onOpenStart doesn't get called
+    // at the right time when sliding to open, so let's just ignore the isClosed
+    // flag on this for now unless it really slows down the app
+    if (!this.state.ready /* || this.props.isClosed */)
       return <View />
 
     return (

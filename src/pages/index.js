@@ -13,6 +13,7 @@ import SavedCharts from './saved-charts';
 import ListingView from './listing';
 import PlanetView from './library/planet';
 import SignView from './library/sign';
+import HouseView from './library/house';
 
 import {
   AsyncStorage,
@@ -134,6 +135,7 @@ export default class IndexView extends Component {
         disabled={disableMenu}
         openDrawerOffset={0.4}
         tapToClose={true}
+        panOpenMask={0.1}
         tweenHandler={Drawer.tweenPresets.parallax}
         onOpenStart={this.onDrawerOpenStart}
         onClose={this.onDrawerClose}
@@ -156,6 +158,7 @@ export default class IndexView extends Component {
 
             <Route path="/planet/:name" component={PlanetView} history={this.history} />
             <Route path="/sign/:name" component={SignView} history={this.history} />
+            <Route path="/house/:name" component={HouseView} history={this.history} />
 
             <Route path="/" render={() => ( <View /> )} />
           </Switch>

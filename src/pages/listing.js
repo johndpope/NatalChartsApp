@@ -7,12 +7,9 @@ import Chroma from 'chroma-js';
 
 import {
   Alert,
-  AsyncStorage,
   StyleSheet,
-  Button,
   FlatList,
   Text,
-  TextInput,
   ScrollView,
   TouchableOpacity,
   Platform,
@@ -123,29 +120,35 @@ const TopRow = ({children, useWhiteText,  ...props}) => (
   <Text style={[styles.textRowBottomOnly, useWhiteText ? styles.textWhite : styles.textBlack]}>{children}</Text>
 );
 
+const AppLink = ({children, to, ...props}) => (
+  <Link to={to} component={TouchableOpacity}>
+    {children}
+  </Link>
+);
+
 const PageHeader = ({planetName, planet, sign, signName, backgroundColor, ...props}) => {
   let whiteText = isReadable(backgroundColor, '#FFF') ? true : false;
 
   return (
     <View style={styles.center}>
-      <Link to={`/planet/${planetName}`}>
+      <AppLink to={`/planet/${planetName}`}>
         <View>
           <Title useWhiteText={whiteText}>{planetName}</Title>
         </View>
-      </Link>
+      </AppLink>
       {planet.icon &&
-        <Link to={`/planet/${planetName}`}>
+        <AppLink to={`/planet/${planetName}`}>
           <View>
             <SvgImage styles={styles.textWhite} width="80" height="80" source={{uri: planet.icon}} />
           </View>
-        </Link>
+        </AppLink>
       }
-      <Link to={`/sign/${signName}`}>
+      <AppLink to={`/sign/${signName}`}>
         <View><Row useWhiteText={whiteText}>{signName}</Row></View>
-      </Link>
-      <Link to={`/sign/${signName}`}>
+      </AppLink>
+      <AppLink to={`/sign/${signName}`}>
         <View><SvgImage style={styles.row} width="60" height="60" source={{uri: sign.icon}} /></View>
-      </Link>
+      </AppLink>
     </View>
   )
 };
@@ -161,13 +164,17 @@ const SignInfo = ({signName, sign, planetName, planet, backgroundColor, ...props
   )
 };
 
-const HouseInfo = ({name, house, backgroundColor, ...props}) => {
+const HouseInfo = ({houseName, house, planetName, backgroundColor, ...props}) => {
   let whiteText = isReadable(backgroundColor, '#FFF') ? true : false;
 
   return (
     <View style={styles.section}>
-      <ShortRow useWhiteText={whiteText}>{name} in {house.title}.</ShortRow>
-      <ShortRow useWhiteText={whiteText}>{house.title}: {house.description}</ShortRow>
+      <AppLink to={`/house/${houseName}`}>
+        <View>
+          <ShortRow useWhiteText={whiteText}>{planetName} in {house.title}.</ShortRow>
+          <ShortRow useWhiteText={whiteText}>{house.title}: {house.description}</ShortRow>
+        </View>
+      </AppLink>
     </View>
   )
 };
@@ -282,7 +289,7 @@ export default class ListingView extends Component {
         <View style={styles.page}>
           <PageHeader planetName={page.name} planet={planetInfo} sign={sign} signName={planet.sign} backgroundColor={backgroundColor} />
           <SignInfo planetName={page.name} planet={planetInfo} signName={planet.sign} sign={sign} backgroundColor={backgroundColor} />
-          <HouseInfo name={page.name} house={houseInfo} backgroundColor={backgroundColor} />
+          <HouseInfo planetName={page.name} house={houseInfo} houseName={page.val.house} backgroundColor={backgroundColor} />
           <AspectInfo aspects={page.val.aspects} backgroundColor={backgroundColor} />
         </View>
       </ScrollView>

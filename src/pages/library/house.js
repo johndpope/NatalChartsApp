@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { Header, SvgImage } from '../../components/';
-import { PLANET_SORT_ORDER, SIGNS_WITH_INFO, PLANETS_WITH_INFO, HOUSES_WITH_INFO } from '../../static';
+import { HOUSES_WITH_INFO } from '../../static';
 
 import {
   StyleSheet,
@@ -30,7 +30,8 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: 'Karla-Regular',
     fontSize: 22,
-    marginBottom: 10
+    marginBottom: 10,
+    textAlign: 'center'
   },
   text: {
     fontFamily: 'Karla-Regular',
@@ -45,16 +46,16 @@ const styles = StyleSheet.create({
   }
 });
 
-export default class PlanetView extends Component {
+export default class HouseView extends Component {
   constructor(props) {
     super(props);
 
-    let planetName = props.match.params.name;
-    let planet = PLANETS_WITH_INFO[planetName];
+    let houseName = props.match.params.name;
+    let house = HOUSES_WITH_INFO[houseName];
 
     this.state = {
-      planetName: planetName,
-      planet: planet
+      houseName: houseName,
+      house: house
     };
 
     this.onBackPress = this.onBackPress.bind(this);
@@ -68,20 +69,20 @@ export default class PlanetView extends Component {
   }
 
   render() {
-    let name = this.state.planetName;
-    let planet = this.state.planet;
-
+    let house = this.state.house;
     return (
       <View style={styles.container}>
         <Header onBackPress={this.onBackPress} />
+
         <View style={styles.page}>
-          <Text style={styles.title}>{`${name} - ${planet.title}`}</Text>
-          {planet.icon &&
-            <SvgImage style={styles.icon} width="80" height="80" source={{uri: planet.icon}} />
-          }
-          <Text style={styles.text}>{planet.description}</Text>
+          <Text style={styles.title}>{house.title}</Text>
+          <Text style={styles.title}>{house.description}</Text>
           <View style={styles.row}>
-            <Text style={styles.text}>Planets control...</Text>
+            <Text style={styles.text}>Ruling Planet: {house.ruling_planet}</Text>
+            <Text style={styles.text}>Ruling Sign: {house.ruling_sign}</Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.text}>Houses are like...</Text>
           </View>
         </View>
       </View>

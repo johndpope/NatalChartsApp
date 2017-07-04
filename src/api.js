@@ -1,17 +1,17 @@
 const BASE_URI = "https://kasra-natal-charts.herokuapp.com/"
 
-export default class Api {
-  geolocate(query, date) {
+const api = {
+  geolocate(query, date, time) {
     var formData = new FormData();
     formData.append("q", query);
     formData.append("time_year", date.year());
     formData.append("time_month", date.month() + 1);
     formData.append("time_day", date.date());
+    formData.append("time_hour", time.hour());
 
     return fetch(BASE_URI + "geocode", {method: 'POST', body: formData})
       .then((res) => res.json());
-  }
-
+  },
   chart(name, date, time, location) {
     var formData = new FormData();
     formData.append("name", name);
@@ -30,4 +30,6 @@ export default class Api {
     return fetch(BASE_URI + "chart", {method: 'POST', body: formData})
       .then((res) => res.json());
   }
-}
+};
+
+module.exports = api;

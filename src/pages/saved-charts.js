@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import moment from 'moment';
-import DatePicker from 'react-native-datepicker';
 import Swipeout from 'react-native-swipeout';
 import store from 'react-native-simple-store';
+import moment from 'moment';
 import Api from '../api';
 
 import { Header, SvgImage } from '../components/';
@@ -12,9 +11,7 @@ import {
   Alert,
   FlatList,
   StyleSheet,
-  Button,
   Text,
-  TextInput,
   TouchableOpacity,
   ScrollView,
   Platform,
@@ -64,17 +61,21 @@ export default class SavedCharts extends Component {
       list_items: []
     };
 
-    this.getCharts = this.getCharts.bind(this);
+    this.parseCharts = this.parseCharts.bind(this);
     this.showChart = this.showChart.bind(this);
     this.renderListItem = this.renderListItem.bind(this);
     this.onBackPress = this.onBackPress.bind(this);
     this.onAddChart = this.onAddChart.bind(this);
     this.onEditChart = this.onEditChart.bind(this);
     this.onDeleteChart = this.onDeleteChart.bind(this);
+    this.deleteChart = this.deleteChart.bind(this);
   }
 
   componentWillMount() {
-    this.getCharts();
+    store.get('savedCharts')
+      .then((res) => {
+        this.parseCharts(res);
+      });
   }
 
   onBackPress() {
@@ -85,41 +86,57 @@ export default class SavedCharts extends Component {
     this.props.history.push('/add');
   }
 
-  getCharts() {
-    store.get('savedCharts')
-      .then((res) => {
-        list_items = [];
-        for(var i = 0; i < res.length; i++) {
-          list_items.push({
-            'name': res[i]['person']['name'],
-            'birthdate': res[i]['person']['birthdate'],
-            'sun': res[i]['chart']['planets']['Sun']['planet']['sign']
-          });
-        };
-
-        this.setState({charts: res, list_items: list_items});
+  parseCharts(charts) {
+    list_items = [];
+    for(var i = 0; i < charts.length; i++) {
+      list_items.push({
+        name: charts[i].person.name,
+        birthdate: charts[i].person.birthdate,
+        sun: charts[i].chart.planets.Sun.planet.sign
       });
+    };
+
+    this.setState({charts: charts, list_items: list_items});
   }
 
-  showChart(index) {
-    let name = this.state.charts[index]['person']['name'];
-    this.props.history.push('/chart/' + name);
+  showChart(item) {
+    this.props.history.push('/chart/' + item.name);
   }
 
-  onEditChart(index) {
-    let name = this.state.charts[index].person.name;
-    Alert.alert(`#TODO: Edit ${name}'s chart`);
+  onEditChart(item) {
+    Alert.alert(`#TODO: Edit ${item.name}'s chart`);
   }
 
-  onDeleteChart(index) {
-    let name = this.state.charts[index].person.name;
-    Alert.alert(`Delete ${name}'s Chart?`, ``,
+  onDeleteChart(item) {
+    Alert.alert(`Delete ${item.name}'s Chart?`, ``,
       [
+        {text: "Cancel", style: 'cancel'},
         {text: "Delete", style: 'destructive', onPress: () =>
-          { Alert.alert(`#TODO: Delete ${name}'s chart`) }
+          {
+            this.deleteChart(item);
+          }
         }
       ]
     );
+  }
+
+  deleteChart(item) {
+    store.get('savedCharts')
+      .then((res) => {
+        var toDelete = -1;
+        for(var i = 0; i < res.length; i++) {
+          if (res[i].person.name === item.name && res[i].person.birthdate === item.birthdate) {
+            toDelete = i;
+            break;
+          }
+        }
+
+        if (toDelete != -1) {
+          res.splice(toDelete);
+          this.parseCharts(res);
+          store.save('savedCharts', res);
+        }
+      });
   }
 
   renderListItem({item, index}) {
@@ -129,18 +146,18 @@ export default class SavedCharts extends Component {
     let rowActions = [
       {
         text: "Edit",
-        onPress: () => { this.onEditChart(index) }
+        onPress: () => { this.onEditChart(item) }
       },
       {
         text: "Delete",
         type: "delete",
-        onPress: () => { this.onDeleteChart(index) }
+        onPress: () => { this.onDeleteChart(item) }
       }
     ];
 
     return (
         <Swipeout style={styles.listItemContainer} right={rowActions} autoClose={true}>
-          <TouchableOpacity onPress={() => this.showChart(index)}>
+          <TouchableOpacity onPress={() => this.showChart(item)}>
             <View style={styles.listItem}>
               <Text style={styles.text}>{item.name}</Text>
               <Text style={styles.text}>{displayTime}</Text>

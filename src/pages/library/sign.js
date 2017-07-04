@@ -40,6 +40,10 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginBottom: 10
+  },
+  row: {
+    marginTop: 10,
+    marginBottom: 10
   }
 });
 
@@ -84,6 +88,9 @@ export default class SignView extends Component {
             <Text style={styles.text}>Element: {sign.element}</Text>
             <Text style={styles.text}>Quality: {sign.quality}</Text>
             <Text style={styles.text}>Ruler: {sign.ruler}</Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.text}>Signs are like...</Text>
           </View>
         </View>
       </View>

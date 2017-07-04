@@ -159,10 +159,11 @@ export default class SetupView extends Component {
       return;
     }
 
-    let birth_date = moment(this.state.birth_date, 'YYYY-MM-DD');
+    let birth_date = moment(this.state.birth_date, 'MM/DD/YYYY');
+    let birth_time = moment(this.state.birth_time, 'hh:mm a');
 
     this.setState({is_processing: true});
-    new Api().geolocate(this.state.birth_city, birth_date)
+    Api.geolocate(this.state.birth_city, birth_date, birth_time)
       .then((json) => {
         this.setState({parsed_birth_city: json});
         this.showCityConfirmation();
@@ -187,7 +188,7 @@ export default class SetupView extends Component {
     let birth_date = moment(this.state.birth_date, 'MM/DD/YYYY');
     let birth_time = moment(this.state.birth_time, 'hh:mm a');
 
-    new Api().chart(this.state.name, birth_date, birth_time, this.state.parsed_birth_city)
+    Api.chart(this.state.name, birth_date, birth_time, this.state.parsed_birth_city)
       .then((json) => {
         AsyncStorage.setItem('@NatalCharts:loggedInUser', JSON.stringify(json))
           .then(this.props.onComplete)

@@ -3032,6 +3032,12 @@ react-native-simple-store@^1.3.0:
   dependencies:
     lodash.merge "4.6.0"
 
+react-native-sortable-listview:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/react-native-sortable-listview/-/react-native-sortable-listview-0.2.2.tgz#f0405ddc52b3dda5e7faaac8314068a1734a0773"
+  dependencies:
+    react-timer-mixin "^0.13.3"
+
 react-native-svg@^5.2.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-5.2.0.tgz#0ed24e04ee9f755b5a6fc840ff69792207e08aca"
@@ -3171,7 +3177,7 @@ react-test-renderer@~15.4.1:
     fbjs "^0.8.4"
     object-assign "^4.1.0"
 
-react-timer-mixin@^0.13.2:
+react-timer-mixin@^0.13.2, react-timer-mixin@^0.13.3:
   version "0.13.3"
   resolved "https://registry.yarnpkg.com/react-timer-mixin/-/react-timer-mixin-0.13.3.tgz#0da8b9f807ec07dc3e854d082c737c65605b3d22"
 
